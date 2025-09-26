@@ -22,32 +22,32 @@ import {
   Tv,
   Business
 } from '@mui/icons-material';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { dashboardAPI } from '../../api/dashboardAPI';
 import LoadingSpinner from '../Shared/LoadingSpinner';
 import MetricCard from '../Shared/MetricCard';
 import ChartContainer from '../Shared/ChartContainer';
 
 const StoreTab: React.FC = () => {
-  const { data: storeData, isLoading } = useQuery(
-    'store-metrics',
-    () => dashboardAPI.getStoreMetrics()
-  );
+  const { data: storeData, isLoading } = useQuery({
+    queryKey: ['store-metrics'],
+    queryFn: () => dashboardAPI.getStoreMetrics()
+  });
 
-  const { data: storeKPIs } = useQuery(
-    'store-kpis',
-    () => dashboardAPI.getStoreKPIs()
-  );
+  const { data: storeKPIs } = useQuery({
+    queryKey: ['store-kpis'],
+    queryFn: () => dashboardAPI.getStoreKPIs()
+  });
 
-  const { data: storeComparison } = useQuery(
-    'store-comparison',
-    () => dashboardAPI.getStoreComparison()
-  );
+  const { data: storeComparison } = useQuery({
+    queryKey: ['store-comparison'],
+    queryFn: () => dashboardAPI.getStoreComparison()
+  });
 
-  const { data: storeAlerts } = useQuery(
-    'store-alerts',
-    () => dashboardAPI.getStoreAlerts()
-  );
+  const { data: storeAlerts } = useQuery({
+    queryKey: ['store-alerts'],
+    queryFn: () => dashboardAPI.getStoreAlerts()
+  });
 
   if (isLoading) {
     return <LoadingSpinner message="Loading store metrics..." />;

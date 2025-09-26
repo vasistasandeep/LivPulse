@@ -22,27 +22,27 @@ import {
   Tv,
   SmartTv
 } from '@mui/icons-material';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { dashboardAPI } from '../../api/dashboardAPI';
 import LoadingSpinner from '../Shared/LoadingSpinner';
 import MetricCard from '../Shared/MetricCard';
 import ChartContainer from '../Shared/ChartContainer';
 
 const PlatformTab: React.FC = () => {
-  const { data: platformData, isLoading } = useQuery(
-    'platform-metrics',
-    () => dashboardAPI.getPlatformMetrics()
-  );
+  const { data: platformData, isLoading } = useQuery({
+    queryKey: ['platform-metrics'],
+    queryFn: () => dashboardAPI.getPlatformMetrics()
+  });
 
-  const { data: platformKPIs } = useQuery(
-    'platform-kpis',
-    () => dashboardAPI.getPlatformKPIs()
-  );
+  const { data: platformKPIs } = useQuery({
+    queryKey: ['platform-kpis'],
+    queryFn: () => dashboardAPI.getPlatformKPIs()
+  });
 
-  const { data: platformComparison } = useQuery(
-    'platform-comparison',
-    () => dashboardAPI.getPlatformComparison()
-  );
+  const { data: platformComparison } = useQuery({
+    queryKey: ['platform-comparison'],
+    queryFn: () => dashboardAPI.getPlatformComparison()
+  });
 
   if (isLoading) {
     return <LoadingSpinner message="Loading platform metrics..." />;

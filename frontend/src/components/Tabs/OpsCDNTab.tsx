@@ -23,37 +23,37 @@ import {
   Build,
   Public
 } from '@mui/icons-material';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { dashboardAPI } from '../../api/dashboardAPI';
 import LoadingSpinner from '../Shared/LoadingSpinner';
 import MetricCard from '../Shared/MetricCard';
 import ChartContainer from '../Shared/ChartContainer';
 
 const OpsCDNTab: React.FC = () => {
-  const { data: opsData, isLoading } = useQuery(
-    'ops-metrics',
-    () => dashboardAPI.getOpsMetrics()
-  );
+  const { data: opsData, isLoading } = useQuery({
+    queryKey: ['ops-metrics'],
+    queryFn: () => dashboardAPI.getOpsMetrics()
+  });
 
-  const { data: cdnData } = useQuery(
-    'cdn-metrics',
-    () => dashboardAPI.getCDNMetrics()
-  );
+  const { data: cdnData } = useQuery({
+    queryKey: ['cdn-metrics'],
+    queryFn: () => dashboardAPI.getCDNMetrics()
+  });
 
-  const { data: devopsData } = useQuery(
-    'devops-metrics',
-    () => dashboardAPI.getDevOpsMetrics()
-  );
+  const { data: devopsData } = useQuery({
+    queryKey: ['devops-metrics'],
+    queryFn: () => dashboardAPI.getDevOpsMetrics()
+  });
 
-  const { data: opsKPIs } = useQuery(
-    'ops-kpis',
-    () => dashboardAPI.getOpsKPIs()
-  );
+  const { data: opsKPIs } = useQuery({
+    queryKey: ['ops-kpis'],
+    queryFn: () => dashboardAPI.getOpsKPIs()
+  });
 
-  const { data: opsAlerts } = useQuery(
-    'ops-alerts',
-    () => dashboardAPI.getOpsAlerts()
-  );
+  const { data: opsAlerts } = useQuery({
+    queryKey: ['ops-alerts'],
+    queryFn: () => dashboardAPI.getOpsAlerts()
+  });
 
   if (isLoading) {
     return <LoadingSpinner message="Loading operations metrics..." />;

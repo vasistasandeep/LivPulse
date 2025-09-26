@@ -21,7 +21,7 @@ import {
   Download,
   Refresh
 } from '@mui/icons-material';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { dashboardAPI } from '../api/dashboardAPI';
 import { useAuth } from '../contexts/AuthContext';
 import LoadingSpinner from '../components/Shared/LoadingSpinner';
@@ -63,31 +63,25 @@ const DashboardPage: React.FC = () => {
   const { user, isExecutive } = useAuth();
 
   // Fetch dashboard overview data
-  const { data: overviewData, isLoading: overviewLoading, refetch: refetchOverview } = useQuery(
-    'dashboard-overview',
-    () => dashboardAPI.getOverview(),
-    {
-      refetchInterval: 30000, // Refresh every 30 seconds
-    }
-  );
+  const { data: overviewData, isLoading: overviewLoading, refetch: refetchOverview } = useQuery({
+    queryKey: ['dashboard-overview'],
+    queryFn: () => dashboardAPI.getOverview(),
+    refetchInterval: 30000, // Refresh every 30 seconds
+  });
 
   // Fetch KPIs
-  const { data: kpisData, isLoading: kpisLoading } = useQuery(
-    'dashboard-kpis',
-    () => dashboardAPI.getKPIs(),
-    {
-      refetchInterval: 60000, // Refresh every minute
-    }
-  );
+  const { data: kpisData, isLoading: kpisLoading } = useQuery({
+    queryKey: ['dashboard-kpis'],
+    queryFn: () => dashboardAPI.getKPIs(),
+    refetchInterval: 60000, // Refresh every minute
+  });
 
   // Fetch alerts
-  const { data: alertsData, isLoading: alertsLoading } = useQuery(
-    'dashboard-alerts',
-    () => dashboardAPI.getAlerts(),
-    {
-      refetchInterval: 15000, // Refresh every 15 seconds
-    }
-  );
+  const { data: alertsData, isLoading: alertsLoading } = useQuery({
+    queryKey: ['dashboard-alerts'],
+    queryFn: () => dashboardAPI.getAlerts(),
+    refetchInterval: 15000, // Refresh every 15 seconds
+  });
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);

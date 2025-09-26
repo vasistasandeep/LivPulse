@@ -24,32 +24,32 @@ import {
   CloudQueue,
   AccountCircle
 } from '@mui/icons-material';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { dashboardAPI } from '../../api/dashboardAPI';
 import LoadingSpinner from '../Shared/LoadingSpinner';
 import MetricCard from '../Shared/MetricCard';
 import ChartContainer from '../Shared/ChartContainer';
 
 const BackendServicesTab: React.FC = () => {
-  const { data: backendData, isLoading } = useQuery(
-    'backend-metrics',
-    () => dashboardAPI.getBackendMetrics()
-  );
+  const { data: backendData, isLoading } = useQuery({
+    queryKey: ['backend-metrics'],
+    queryFn: () => dashboardAPI.getBackendMetrics()
+  });
 
-  const { data: backendKPIs } = useQuery(
-    'backend-kpis',
-    () => dashboardAPI.getBackendKPIs()
-  );
+  const { data: backendKPIs } = useQuery({
+    queryKey: ['backend-kpis'],
+    queryFn: () => dashboardAPI.getBackendKPIs()
+  });
 
-  const { data: backendAlerts } = useQuery(
-    'backend-alerts',
-    () => dashboardAPI.getBackendAlerts()
-  );
+  const { data: backendAlerts } = useQuery({
+    queryKey: ['backend-alerts'],
+    queryFn: () => dashboardAPI.getBackendAlerts()
+  });
 
-  const { data: dependencies } = useQuery(
-    'backend-dependencies',
-    () => dashboardAPI.getBackendDependencies()
-  );
+  const { data: dependencies } = useQuery({
+    queryKey: ['backend-dependencies'],
+    queryFn: () => dashboardAPI.getBackendDependencies()
+  });
 
   if (isLoading) {
     return <LoadingSpinner message="Loading backend services..." />;

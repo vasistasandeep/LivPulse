@@ -23,32 +23,32 @@ import {
   Publish,
   AccountTree
 } from '@mui/icons-material';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { dashboardAPI } from '../../api/dashboardAPI';
 import LoadingSpinner from '../Shared/LoadingSpinner';
 import MetricCard from '../Shared/MetricCard';
 import ChartContainer from '../Shared/ChartContainer';
 
 const CMSTab: React.FC = () => {
-  const { data: cmsData, isLoading } = useQuery(
-    'cms-metrics',
-    () => dashboardAPI.getCMSMetrics()
-  );
+  const { data: cmsData, isLoading } = useQuery({
+    queryKey: ['cms-metrics'],
+    queryFn: () => dashboardAPI.getCMSMetrics()
+  });
 
-  const { data: cmsKPIs } = useQuery(
-    'cms-kpis',
-    () => dashboardAPI.getCMSKPIs()
-  );
+  const { data: cmsKPIs } = useQuery({
+    queryKey: ['cms-kpis'],
+    queryFn: () => dashboardAPI.getCMSKPIs()
+  });
 
-  const { data: cmsProcessing } = useQuery(
-    'cms-processing',
-    () => dashboardAPI.getCMSProcessingStats()
-  );
+  const { data: cmsProcessing } = useQuery({
+    queryKey: ['cms-processing'],
+    queryFn: () => dashboardAPI.getCMSProcessingStats()
+  });
 
-  const { data: cmsAlerts } = useQuery(
-    'cms-alerts',
-    () => dashboardAPI.getCMSAlerts()
-  );
+  const { data: cmsAlerts } = useQuery({
+    queryKey: ['cms-alerts'],
+    queryFn: () => dashboardAPI.getCMSAlerts()
+  });
 
   if (isLoading) {
     return <LoadingSpinner message="Loading CMS metrics..." />;
