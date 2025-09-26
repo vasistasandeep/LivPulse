@@ -20,7 +20,7 @@ import {
   Apple,
   Web,
   Tv,
-  SmartTv
+  ConnectedTv
 } from '@mui/icons-material';
 import { useQuery } from '@tanstack/react-query';
 import { dashboardAPI } from '../../api/dashboardAPI';
@@ -28,7 +28,7 @@ import LoadingSpinner from '../Shared/LoadingSpinner';
 import MetricCard from '../Shared/MetricCard';
 import ChartContainer from '../Shared/ChartContainer';
 
-const PlatformTab: React.FC = () => {
+const PlatformTab = () => {
   const { data: platformData, isLoading } = useQuery({
     queryKey: ['platform-metrics'],
     queryFn: () => dashboardAPI.getPlatformMetrics()
@@ -63,7 +63,7 @@ const PlatformTab: React.FC = () => {
       case 'atv':
         return <Tv />;
       case 'smart tv':
-        return <SmartTv />;
+        return <ConnectedTv />;
       default:
         return <Web />;
     }

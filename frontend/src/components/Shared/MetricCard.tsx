@@ -30,7 +30,7 @@ interface MetricCardProps {
   info?: string;
 }
 
-const MetricCard: React.FC<MetricCardProps> = ({
+const MetricCard = ({
   title,
   value,
   subtitle,
@@ -39,7 +39,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
   icon,
   onClick,
   info
-}) => {
+}: MetricCardProps) => {
   const getStatusColor = (status?: string) => {
     switch (status) {
       case 'healthy':

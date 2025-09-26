@@ -7,11 +7,11 @@ interface LoadingSpinnerProps {
   color?: 'primary' | 'secondary' | 'inherit';
 }
 
-const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ 
+const LoadingSpinner = ({ 
   size = 40, 
   message = 'Loading...', 
   color = 'primary' 
-}) => {
+}: LoadingSpinnerProps) => {
   return (
     <Box
       display="flex"
