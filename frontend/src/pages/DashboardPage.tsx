@@ -116,7 +116,6 @@ const DashboardPage: React.FC = () => {
   }
 
   const overview = overviewData?.data?.data;
-  const kpis = kpisData?.data?.data;
   const alerts = alertsData?.data?.data;
 
   return (
