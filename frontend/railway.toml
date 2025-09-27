@@ -2,10 +2,16 @@
 builder = "NIXPACKS"
 
 [deploy]
-startCommand = "npm run build && npx serve -s build -l 3000"
+startCommand = "npm run serve"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
 
-[variables]
-NPM_CONFIG_LEGACY_PEER_DEPS = "true"
+[build.args]
+NPM_CONFIG_LEGACY_PEER_DEPS = "1"
+
+[build.commands]
+build = "npm run build"
+
+[deploy.public]
+directory = "build"
