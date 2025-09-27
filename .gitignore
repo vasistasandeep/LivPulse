@@ -58,9 +58,8 @@ coverage/
 .nuxt
 dist
 
-# Gatsby files
+# Gatsby files (not applicable to React app)
 .cache/
-public
 
 # Temporary folders
 tmp/
