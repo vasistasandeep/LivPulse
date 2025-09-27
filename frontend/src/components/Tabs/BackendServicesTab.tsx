@@ -94,18 +94,6 @@ const BackendServicesTab: React.FC = () => {
     }
   };
 
-  const getHealthColor = (health: string) => {
-    switch (health) {
-      case 'healthy':
-        return 'success';
-      case 'warning':
-        return 'warning';
-      case 'critical':
-        return 'error';
-      default:
-        return 'default';
-    }
-  };
 
   return (
     <Box>
@@ -124,11 +112,6 @@ const BackendServicesTab: React.FC = () => {
               title="Average Uptime"
               value={`${kpis.summary.avgUptime}%`}
               status={kpis.summary.avgUptime >= 99.5 ? 'healthy' : 'warning'}
-              trend={{
-                direction: 'up',
-                value: 0.2,
-                label: 'vs last week'
-              }}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
