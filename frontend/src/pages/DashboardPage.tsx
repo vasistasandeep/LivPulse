@@ -69,13 +69,6 @@ const DashboardPage: React.FC = () => {
     refetchInterval: 30000, // Refresh every 30 seconds
   });
 
-  // Fetch KPIs
-  const { data: kpisData, isLoading: kpisLoading } = useQuery({
-    queryKey: ['dashboard-kpis'],
-    queryFn: () => dashboardAPI.getKPIs(),
-    refetchInterval: 60000, // Refresh every minute
-  });
-
   // Fetch alerts
   const { data: alertsData, isLoading: alertsLoading } = useQuery({
     queryKey: ['dashboard-alerts'],
@@ -111,7 +104,7 @@ const DashboardPage: React.FC = () => {
     { label: 'CMS', icon: <ContentPaste /> },
   ];
 
-  if (overviewLoading || kpisLoading || alertsLoading) {
+  if (overviewLoading || alertsLoading) {
     return <LoadingSpinner size={60} message="Loading dashboard..." />;
   }
 
