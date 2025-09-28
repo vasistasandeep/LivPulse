@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "name": "livpulse-backend",
   "version": "1.0.0",
   "description": "LivPulse - OTT Program Management Reporting Backend",
@@ -44,26 +43,4 @@
   ],
   "author": "Your Name",
   "license": "MIT"
-=======
-  "name": "livpulse",
-  "version": "1.0.0",
-  "description": "AI-powered OTT Program Management Reporting Tool",
-  "main": "server.js",
-  "scripts": {
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "cd backend; npm run dev",
-    "client": "cd frontend; npm start", 
-    "build": "cd frontend; npm run build",
-    "start": "cd backend; npm start",
-    "install-deps": "npm install; cd backend; npm install; cd ../frontend; npm install",
-    "backend": "cd backend; npm run dev",
-    "frontend": "cd frontend; npm start"
-  },
-  "keywords": ["ott", "reporting", "dashboard", "ai"],
-  "author": "Your Name",
-  "license": "MIT",
-  "devDependencies": {
-    "concurrently": "^8.2.2"
-  }
->>>>>>> c573ff4160e32908dbb0addd6e9c026caa92ca2b
 }
