@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 // Create axios instance with base configuration
 const apiClient = axios.create({
@@ -33,7 +34,17 @@ apiClient.interceptors.response.use(
       // Token expired or invalid
       localStorage.removeItem('token');
       window.location.href = '/login';
+    } else if (error.code === 'ECONNABORTED' || !error.response) {
+      // Handle timeout or no response (server down)
+      toast.error('Unable to connect to the server. Please try again later.');
+    } else if (error.response.status >= 500) {
+      // Handle server errors
+      toast.error('Server error. Please try again later.');
+    } else if (error.response.status === 502) {
+      // Handle bad gateway
+      toast.error('The server is currently unavailable. Please try again later.');
     }
+    
     return Promise.reject(error);
   }
 );

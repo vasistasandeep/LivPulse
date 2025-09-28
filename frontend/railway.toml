@@ -2,13 +2,14 @@
 builder = "NIXPACKS"
 
 [deploy]
-startCommand = "npm run serve"
+startCommand = "npx serve -s build -l $PORT -H 0.0.0.0"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
 
 [build.args]
 NPM_CONFIG_LEGACY_PEER_DEPS = "1"
+GENERATE_SOURCEMAP = "false"
 
 [build.commands]
 build = "npm run build"

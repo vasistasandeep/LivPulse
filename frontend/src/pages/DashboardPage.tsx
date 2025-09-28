@@ -63,18 +63,38 @@ const DashboardPage: React.FC = () => {
   const { user, isExecutive } = useAuth();
 
   // Fetch dashboard overview data
-  const { data: overviewData, isLoading: overviewLoading, refetch: refetchOverview } = useQuery({
+  const { 
+    data: overviewData, 
+    isLoading: overviewLoading, 
+    error: overviewError,
+    refetch: refetchOverview 
+  } = useQuery({
     queryKey: ['dashboard-overview'],
     queryFn: () => dashboardAPI.getOverview(),
     refetchInterval: 30000, // Refresh every 30 seconds
+    retry: 2, // Retry failed requests twice before showing an error
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
   });
 
   // Fetch alerts
-  const { data: alertsData, isLoading: alertsLoading } = useQuery({
+  const { 
+    data: alertsData, 
+    isLoading: alertsLoading,
+    error: alertsError,
+    refetch: refetchAlerts 
+  } = useQuery({
     queryKey: ['dashboard-alerts'],
     queryFn: () => dashboardAPI.getAlerts(),
     refetchInterval: 15000, // Refresh every 15 seconds
+    retry: 2, // Retry failed requests twice before showing an error
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
   });
+
+  // Handle retry for failed requests
+  const handleRetry = () => {
+    refetchOverview();
+    refetchAlerts();
+  };
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -107,30 +127,43 @@ const DashboardPage: React.FC = () => {
   if (overviewLoading || alertsLoading) {
     return <LoadingSpinner size={60} message="Loading dashboard..." />;
   }
-
   const overview = overviewData?.data?.data;
   const alerts = alertsData?.data?.data;
 
   return (
     <Box>
-      {/* Header */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Box>
-          <Typography variant="h4" component="h1" gutterBottom>
-            {isExecutive ? 'Executive Dashboard' : 'Program Management Dashboard'}
-          </Typography>
-          <Typography variant="body1" color="textSecondary">
-            Welcome back, {user?.name}. Here's your OTT program overview.
-          </Typography>
-        </Box>
-        <Box display="flex" gap={2}>
-          <Button
-            variant="outlined"
-            startIcon={<Refresh />}
-            onClick={() => refetchOverview()}
+      {(overviewError || alertsError) && (
+        <Box p={2}>
+          <Alert 
+            severity="error" 
+            action={
+              <Button 
+                color="inherit" 
+                size="small" 
+                onClick={handleRetry}
+                disabled={overviewLoading || alertsLoading}
+              >
+                Retry
+              </Button>
+            }
           >
-            Refresh
-          </Button>
+            Failed to load dashboard data. Please try again.
+          </Alert>
+        </Box>
+      )}
+      
+      <Box display="flex" gap={2} p={2}>
+        <Button
+          variant="outlined"
+          startIcon={<Refresh />}
+          onClick={() => {
+            refetchOverview();
+            refetchAlerts();
+          }}
+          disabled={overviewLoading || alertsLoading}
+        >
+          Refresh
+        </Button>
           {isExecutive && (
             <Button
               variant="contained"
@@ -141,7 +174,6 @@ const DashboardPage: React.FC = () => {
             </Button>
           )}
         </Box>
-      </Box>
 
       {/* Executive Summary (for Overview tab) */}
       {tabValue === 0 && overview && (
