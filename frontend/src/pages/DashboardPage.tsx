@@ -60,7 +60,7 @@ function TabPanel(props: TabPanelProps) {
 
 const DashboardPage: React.FC = () => {
   const [tabValue, setTabValue] = useState(0);
-  const { user, isExecutive } = useAuth();
+  const { isExecutive } = useAuth();
 
   // Fetch dashboard overview data
   const { 
