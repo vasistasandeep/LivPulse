@@ -17,6 +17,7 @@
     "react-scripts": "5.0.1",
     "recharts": "^2.8.0",
     "serve": "^14.2.1",
+    "express": "^4.18.2",
     "typescript": "^4.9.5",
     "web-vitals": "^3.5.0"
   },
@@ -43,7 +44,7 @@
     "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
     "format": "prettier --write src/**/*.{ts,tsx,css,md}",
-    "serve": "serve -s build -l $PORT -H 0.0.0.0"
+    "serve": "node server.js"
   },
   "eslintConfig": {
     "extends": [
