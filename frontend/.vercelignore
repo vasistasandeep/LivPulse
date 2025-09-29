@@ -1,7 +1,0 @@
-# Ignore backend files when deploying frontend
-/src
-/dist  
-/node_modules
-package.json
-tsconfig.json
-*.ts
