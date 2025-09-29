@@ -18,30 +18,83 @@ dotenv.config();
 
 const app = express();
 
-// Security middleware
-app.use(helmet());
+// Security middleware with relaxed CSP for development
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'", "https:"],
+    },
+  },
+}));
 
 // CORS configuration
 app.use(cors({
-  origin: [
-    process.env.FRONTEND_URL || 'http://localhost:3000',
-    'https://*.railway.app',
-    'http://localhost:3000'
-  ],
-  credentials: true
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    
+    // Allow localhost and Railway domains
+    if (
+      origin.includes('localhost') ||
+      origin.includes('127.0.0.1') ||
+      origin.endsWith('.railway.app') ||
+      origin === process.env.FRONTEND_URL
+    ) {
+      return callback(null, true);
+    }
+    
+    // Default allow for development
+    return callback(null, true);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));
+
+// Request logging middleware
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path} - ${req.ip}`);
+  next();
+});
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Root endpoint
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Livpulse Backend API is running',
+    version: '1.0.0',
+    timestamp: new Date().toISOString(),
+    endpoints: {
+      health: '/health',
+      api: '/api',
+      dashboard: '/api/dashboard',
+      publishing: '/api/publishing',
+      admin: '/api/admin'
+    }
+  });
+});
+
+// Favicon handler
+app.get('/favicon.ico', (req, res) => {
+  res.status(204).end();
+});
 
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'OK',
     timestamp: new Date().toISOString(),
-    service: 'OTT Program Reporting Backend',
-    version: '1.0.0'
+    service: 'Livpulse Backend API',
+    version: '1.0.0',
+    uptime: process.uptime()
   });
 });
 
@@ -58,12 +111,18 @@ app.use('/api/admin', adminRoutes);
 
 // Error handling middleware
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error('Error:', err);
+  console.error(`Error on ${req.method} ${req.path}:`, err);
+  
+  // Don't send error details in production
+  const isDevelopment = process.env.NODE_ENV !== 'production';
+  
   res.status(err.status || 500).json({
     error: {
       message: err.message || 'Internal Server Error',
       status: err.status || 500,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      path: req.path,
+      ...(isDevelopment && { stack: err.stack })
     }
   });
 });
