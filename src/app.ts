@@ -38,17 +38,20 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false,
 }));
 
-// CORS configuration
+// CORS configuration for production deployment
 app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (mobile apps, curl, etc.)
     if (!origin) return callback(null, true);
     
-    // Allow localhost and Railway domains
+    // Allow localhost, Vercel, Render, Railway, and other deployment domains
     if (
       origin.includes('localhost') ||
       origin.includes('127.0.0.1') ||
+      origin.endsWith('.vercel.app') ||
+      origin.endsWith('.onrender.com') ||
       origin.endsWith('.railway.app') ||
+      origin.endsWith('.netlify.app') ||
       origin === process.env.FRONTEND_URL
     ) {
       return callback(null, true);

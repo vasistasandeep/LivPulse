@@ -2,7 +2,7 @@ services:
   - type: web
     name: livpulse-backend
     runtime: node
-    plan: free
+    plan: free  
     buildCommand: npm install && npm run build
     startCommand: npm start
     healthCheckPath: /health
