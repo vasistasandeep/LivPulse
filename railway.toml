@@ -1,16 +1,6 @@
 [build]
 builder = "NIXPACKS"
 
-[build.commands]
-build = "npm install && npm run build"
-
 [deploy]
 startCommand = "npm start"
 healthcheckPath = "/health"
-healthcheckTimeout = 300
-restartPolicyType = "ON_FAILURE"
-restartPolicyMaxRetries = 10
-
-[deploy.env]
-NODE_ENV = "development"
-PORT = "$PORT"
