@@ -18,23 +18,10 @@ dotenv.config();
 
 const app = express();
 
-// Security middleware with production-ready CSP that allows necessary functionality
+// Security middleware - disable CSP for API-only backend
 const isDevelopment = process.env.NODE_ENV !== 'production';
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https:", "chrome-extension:"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https:", "fonts.googleapis.com"],
-      imgSrc: ["'self'", "data:", "https:", "blob:"],
-      connectSrc: ["'self'", "https:", "wss:", "data:"],
-      fontSrc: ["'self'", "https:", "data:", "fonts.gstatic.com"],
-      objectSrc: ["'none'"],
-      mediaSrc: ["'self'", "https:", "data:"],
-      frameSrc: ["'self'", "https:"],
-      upgradeInsecureRequests: [],
-    },
-  },
+  contentSecurityPolicy: false, // Disable CSP since this is an API-only backend
   crossOriginEmbedderPolicy: false,
 }));
 
