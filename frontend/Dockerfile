@@ -26,7 +26,7 @@ COPY --from=build /app/server.js ./
 COPY --from=build /app/package*.json ./
 
 # Install only production dependencies
-RUN npm install --only=production
+RUN npm install --only=production --legacy-peer-deps
 
 # Expose port
 EXPOSE $PORT
