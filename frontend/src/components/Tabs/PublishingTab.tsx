@@ -16,8 +16,6 @@ import {
   TableCell,
   Paper,
   Divider,
-  Collapse,
-  IconButton,
   Accordion,
   AccordionSummary,
   AccordionDetails
@@ -40,8 +38,7 @@ import {
   HourglassEmpty,
   Translate,
   Subtitles,
-  ExpandMore,
-  ExpandLess
+  ExpandMore
 } from '@mui/icons-material';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { useQuery } from '@tanstack/react-query';

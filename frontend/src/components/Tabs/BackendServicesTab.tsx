@@ -30,8 +30,7 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
-  Legend
+  Tooltip
 } from 'recharts';
 import { useQuery } from '@tanstack/react-query';
 import { dashboardAPI } from '../../api/dashboardAPI';

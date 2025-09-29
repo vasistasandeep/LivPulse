@@ -9,19 +9,15 @@ import {
   CardContent,
   Alert,
   Button,
-  Chip,
-  Container,
-  Paper
+  Chip
 } from '@mui/material';
 import {
   Dashboard,
   Devices,
   Storage,
   Cloud,
-  LiveTv,
   ContentPaste,
   BugReport,
-  Speed,
   Assignment,
   Refresh,
   Download,

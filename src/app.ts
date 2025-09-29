@@ -12,6 +12,7 @@ import storeRoutes from './routes/storeRoutes';
 import cmsRoutes from './routes/cmsRoutes';
 import reportRoutes from './routes/reportRoutes';
 import authRoutes from './routes/authRoutes';
+import adminRoutes from './routes/adminRoutes';
 
 dotenv.config();
 
@@ -53,6 +54,7 @@ app.use('/api/ops', opsRoutes);
 app.use('/api/store', storeRoutes);
 app.use('/api/cms', cmsRoutes);
 app.use('/api/reports', reportRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Error handling middleware
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

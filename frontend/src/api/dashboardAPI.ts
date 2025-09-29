@@ -162,4 +162,23 @@ export const dashboardAPI = {
 
   generateCustomReport: (config: any) =>
     apiClient.post('/reports/custom', config),
+
+  // Admin APIs for data input
+  updatePublishingData: (data: any) =>
+    apiClient.post('/admin/publishing-data', data),
+
+  updateDashboardData: (data: any) =>
+    apiClient.post('/admin/dashboard-data', data),
+
+  updatePlatformData: (data: any) =>
+    apiClient.post('/admin/platform-data', data),
+
+  updateUserData: (data: any) =>
+    apiClient.post('/admin/user-data', data),
+
+  updateSettings: (settings: any) =>
+    apiClient.post('/admin/settings', settings),
+
+  getSettings: () =>
+    apiClient.get('/admin/settings'),
 };

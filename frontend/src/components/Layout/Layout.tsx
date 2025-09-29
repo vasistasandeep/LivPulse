@@ -24,13 +24,16 @@ import {
   Devices,
   Storage,
   Cloud,
-  Store,
+  Publish,
   ContentPaste,
   Assessment,
   Notifications,
   AccountCircle,
   Logout,
-  Settings
+  Settings,
+  AdminPanelSettings,
+  Summarize,
+  InfoOutlined,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -46,17 +49,24 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, logout, isExecutive } = useAuth();
+  const { user, logout, isExecutive, isAdmin, hasInputAccess } = useAuth();
 
   const menuItems = [
-    { text: 'Dashboard', icon: <Dashboard />, path: '/dashboard' },
-    { text: 'Platforms', icon: <Devices />, path: '/platforms' },
-    { text: 'Backend Services', icon: <Storage />, path: '/backend' },
-    { text: 'Operations', icon: <Cloud />, path: '/operations' },
-    { text: 'Digital Store', icon: <Store />, path: '/store' },
-    { text: 'CMS', icon: <ContentPaste />, path: '/cms' },
-    { text: 'Reports', icon: <Assessment />, path: '/reports' },
-  ];
+    { text: 'Platform Summary', icon: <Summarize />, path: '/summary', roles: ['all'] },
+    { text: 'Analytics Dashboard', icon: <Dashboard />, path: '/dashboard', roles: ['all'] },
+    { text: 'Admin Panel', icon: <AdminPanelSettings />, path: '/admin', roles: ['admin'] },
+    { text: 'Publishing Hub', icon: <Publish />, path: '/publishing', roles: ['admin', 'pm', 'tpm', 'em'] },
+    { text: 'Platform Analytics', icon: <Devices />, path: '/platforms', roles: ['all'] },
+    { text: 'Backend Services', icon: <Storage />, path: '/backend', roles: ['admin', 'sre', 'em'] },
+    { text: 'Operations', icon: <Cloud />, path: '/operations', roles: ['admin', 'sre', 'em'] },
+    { text: 'CMS', icon: <ContentPaste />, path: '/cms', roles: ['admin', 'pm', 'tpm'] },
+    { text: 'Reports', icon: <Assessment />, path: '/reports', roles: ['all'] },
+  ].filter(item => {
+    if (item.roles.includes('all')) return true;
+    if (item.roles.includes('admin') && isAdmin) return true;
+    if (item.roles.includes(user?.role || '')) return true;
+    return false;
+  });
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -78,9 +88,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const drawer = (
     <div>
       <Toolbar>
-        <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold' }}>
-          OTT Reporting
-        </Typography>
+        <Box display="flex" alignItems="center" gap={1}>
+          <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+            Livpulse
+          </Typography>
+          <Tooltip title="OTT Publishing & Program Management Platform">
+            <InfoOutlined fontSize="small" color="action" />
+          </Tooltip>
+        </Box>
       </Toolbar>
       <Divider />
       <List>
@@ -135,13 +150,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </Typography>
           
           {/* Role Badge */}
-          <Badge
-            badgeContent={user?.role.toUpperCase()}
-            color={isExecutive ? 'error' : 'secondary'}
-            sx={{ mr: 2 }}
-          >
-            <Box />
-          </Badge>
+          <Tooltip title={`Logged in as ${user?.role?.toUpperCase()}`}>
+            <Badge
+              badgeContent={user?.role?.toUpperCase()}
+              color={isAdmin ? 'error' : isExecutive ? 'warning' : 'secondary'}
+              sx={{ mr: 2 }}
+            >
+              <Box />
+            </Badge>
+          </Tooltip>
 
           {/* Notifications */}
           <Tooltip title="Notifications">
@@ -183,7 +200,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               </ListItemText>
             </MenuItem>
             <Divider />
-            <MenuItem onClick={handleMenuClose}>
+            <MenuItem onClick={() => {
+              handleMenuClose();
+              navigate('/admin');
+            }}>
               <ListItemIcon>
                 <Settings fontSize="small" />
               </ListItemIcon>

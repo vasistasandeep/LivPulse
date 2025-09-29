@@ -5,11 +5,7 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
-  Legend,
-  PieChart,
-  Pie,
-  Cell
+  Tooltip
 } from 'recharts';
 import {
   Box,

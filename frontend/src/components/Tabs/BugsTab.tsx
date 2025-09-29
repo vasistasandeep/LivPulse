@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Grid, Paper, Typography, Tabs, Tab, CircularProgress } from '@mui/material';
+import { Box, Grid, Typography, CircularProgress } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,

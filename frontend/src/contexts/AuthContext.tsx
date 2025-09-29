@@ -5,7 +5,7 @@ interface User {
   id: number;
   email: string;
   name: string;
-  role: 'executive' | 'pm' | 'sre';
+  role: 'admin' | 'executive' | 'pm' | 'tpm' | 'em' | 'sre';
 }
 
 interface AuthContextType {
@@ -13,9 +13,14 @@ interface AuthContextType {
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
+  isAdmin: boolean;
   isExecutive: boolean;
   isPM: boolean;
+  isTPM: boolean;
+  isEM: boolean;
   isSRE: boolean;
+  hasInputAccess: boolean;
+  hasFullAccess: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -80,9 +85,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     loading,
     login,
     logout,
+    isAdmin: user?.role === 'admin',
     isExecutive: user?.role === 'executive',
     isPM: user?.role === 'pm',
+    isTPM: user?.role === 'tpm',
+    isEM: user?.role === 'em',
     isSRE: user?.role === 'sre',
+    hasInputAccess: user?.role === 'admin' || user?.role === 'pm' || user?.role === 'tpm' || user?.role === 'em',
+    hasFullAccess: user?.role === 'admin',
   };
 
   return (

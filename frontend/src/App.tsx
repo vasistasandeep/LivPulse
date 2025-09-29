@@ -5,10 +5,12 @@ import { useAuth } from './contexts/AuthContext';
 import Layout from './components/Layout/Layout';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
+import AdminPage from './pages/AdminPage';
+import SummaryPage from './pages/SummaryPage';
+import PublishingPage from './pages/PublishingPage';
 import PlatformPage from './pages/PlatformPage';
 import BackendPage from './pages/BackendPage';
 import OperationsPage from './pages/OperationsPage';
-import StorePage from './pages/StorePage';
 import CMSPage from './pages/CMSPage';
 import ReportsPage from './pages/ReportsPage';
 import LoadingSpinner from './components/Shared/LoadingSpinner';
@@ -41,16 +43,18 @@ function App() {
   return (
     <Layout>
       <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/" element={<Navigate to="/summary" replace />} />
+        <Route path="/summary" element={<SummaryPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/admin" element={<AdminPage />} />
         <Route path="/platforms" element={<PlatformPage />} />
         <Route path="/backend" element={<BackendPage />} />
         <Route path="/operations" element={<OperationsPage />} />
-        <Route path="/store" element={<StorePage />} />
+        <Route path="/publishing" element={<PublishingPage />} />
         <Route path="/cms" element={<CMSPage />} />
         <Route path="/reports" element={<ReportsPage />} />
-        <Route path="/login" element={<Navigate to="/dashboard" replace />} />
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/login" element={<Navigate to="/summary" replace />} />
+        <Route path="*" element={<Navigate to="/summary" replace />} />
       </Routes>
     </Layout>
   );

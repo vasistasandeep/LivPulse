@@ -1,7 +1,7 @@
 {
   "name": "livpulse-backend",
   "version": "1.0.0",
-  "description": "LivPulse - OTT Program Management Reporting Backend",
+  "description": "Livpulse - OTT Publishing & Program Management Platform Backend",
   "main": "dist/server.js",
   "scripts": {
     "start": "node dist/server.js",
