@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LivPulse - Test Deploy</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .success { color: green; }
+        .error { color: red; }
+        .api-test { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 LivPulse Deployment Test</h1>
+        <p>If you can see this page, the basic deployment is working!</p>
+        
+        <div class="api-test">
+            <h3>API Connection Test</h3>
+            <button onclick="testAPI()">Test Backend API</button>
+            <div id="api-result"></div>
+        </div>
+        
+        <div>
+            <h3>Environment Info</h3>
+            <p><strong>API URL:</strong> <span id="api-url">Loading...</span></p>
+            <p><strong>Timestamp:</strong> <span id="timestamp"></span></p>
+        </div>
+    </div>
+
+    <script>
+        // Set timestamp
+        document.getElementById('timestamp').textContent = new Date().toISOString();
+        
+        // Show API URL
+        const apiUrl = 'https://livpulse.onrender.com/api';
+        document.getElementById('api-url').textContent = apiUrl;
+        
+        // Test API function
+        async function testAPI() {
+            const resultDiv = document.getElementById('api-result');
+            resultDiv.innerHTML = '<p>Testing API connection...</p>';
+            
+            try {
+                const response = await fetch(apiUrl.replace('/api', '/health'));
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <p class="success">✅ API Connection Successful!</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<p class="error">❌ API Error: ${response.status}</p>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ Connection Failed: ${error.message}</p>`;
+            }
+        }
+        
+        // Auto-test API on load
+        setTimeout(testAPI, 1000);
+    </script>
+</body>
+</html>
