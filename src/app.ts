@@ -18,9 +18,10 @@ dotenv.config();
 
 const app = express();
 
-// Security middleware with relaxed CSP for development
+// Disable CSP completely for development to fix inline script issues
+const isDevelopment = process.env.NODE_ENV !== 'production';
 app.use(helmet({
-  contentSecurityPolicy: {
+  contentSecurityPolicy: isDevelopment ? false : {
     directives: {
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
