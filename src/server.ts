@@ -4,13 +4,13 @@ import app from './app';
 // Load environment variables
 dotenv.config();
 
-const PORT = process.env.PORT || 3001;
+const PORT = parseInt(process.env.PORT || '3001', 10);
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`🚀 OTT Program Reporting Backend running on port ${PORT}`);
-  console.log(`📊 Dashboard API available at http://localhost:${PORT}/api`);
-  console.log(`📈 Health check: http://localhost:${PORT}/health`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Livpulse Backend running on port ${PORT}`);
+  console.log(`📊 Dashboard API available at http://0.0.0.0:${PORT}/api`);
+  console.log(`📈 Health check: http://0.0.0.0:${PORT}/health`);
 });
 
 // Graceful shutdown
