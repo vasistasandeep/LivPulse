@@ -1,179 +1,354 @@
-# LivPulse v2.0 - Advanced OTT Pl## 🔐 Demo Accounts
+# LivPulse v2.0 🚀# LivPulse v2.0 - Advanced OTT Pl## 🔐 Demo Accounts
 
-| Role | Username | Email | Password | Access Level |
+
+
+**Advanced OTT Platform Management System with AI-Powered Insights**| Role | Username | Email | Password | Access Level |
+
 |------|----------|-------|----------|--------------|
-| **Admin** | **admin** | **admin@livpulse.com** | **admin123** | **Full system access + KPI/User Management** |
+
+## 🏗️ Clean Architecture Overview| **Admin** | **admin** | **admin@livpulse.com** | **admin123** | **Full system access + KPI/User Management** |
+
 | Executive | executive1 | executive@livpulse.com | executive123 | Reports & analytics |
-| PM | pm1 | pm@livpulse.com | pm123 | Project management |
-| TPM | tpm1 | tpm@livpulse.com | tpm123 | Technical oversight |
-| EM | em1 | em@livpulse.com | em123 | Engineering management |
-| SRE | sre1 | sre@livpulse.com | sre123 | Infrastructure & monitoring |h Admin & KPI Management
 
-AI-powered OTT platform with comprehensive admin management system and dynamic KPI dashboard builder.
+```| PM | pm1 | pm@livpulse.com | pm123 | Project management |
 
-## 🆕 Version 2.0 Features
+┌─────────────────────────────────────────────────────────────────┐| TPM | tpm1 | tpm@livpulse.com | tpm123 | Technical oversight |
 
-### 👥 **Admin Management System**
-- Complete user CRUD operations with advanced filtering
-- Role-based access control (6-tier system)
-- User analytics dashboard with visual insights
-- Password management and security features
-- Department and permission management
+│                        LivPulse v2.0                           │| EM | em1 | em@livpulse.com | em123 | Engineering management |
 
-### 📊 **KPI Dashboard Builder**
+├─────────────────────────────────────────────────────────────────┤| SRE | sre1 | sre@livpulse.com | sre123 | Infrastructure & monitoring |h Admin & KPI Management
+
+│  Frontend (React/TypeScript)  │  Backend (Node.js/Express)      │
+
+│  ├── Admin Dashboard          │  ├── Authentication APIs        │AI-powered OTT platform with comprehensive admin management system and dynamic KPI dashboard builder.
+
+│  ├── KPI Dashboards          │  ├── Platform Management APIs   │
+
+│  ├── User Management         │  ├── Report Generation APIs     │## 🆕 Version 2.0 Features
+
+│  ├── Role-Based Access       │  ├── AI Integration            │
+
+│  └── Responsive UI           │  └── PDF Export Services       │### 👥 **Admin Management System**
+
+├─────────────────────────────────────────────────────────────────┤- Complete user CRUD operations with advanced filtering
+
+│                    Deployment Strategy                         │- Role-based access control (6-tier system)
+
+│  Frontend: Vercel            │  Backend: Railway/Render        │- User analytics dashboard with visual insights
+
+│  Domain: livpulse.up.railway.app                              │- Password management and security features
+
+│  API: livpulse-production-backend.up.railway.app              │- Department and permission management
+
+└─────────────────────────────────────────────────────────────────┘
+
+```### 📊 **KPI Dashboard Builder**
+
 - Dynamic dashboard creation and management
-- Widget library (metrics, charts, tables, gauges, trends)
+
+## 📂 Clean Project Structure- Widget library (metrics, charts, tables, gauges, trends)
+
 - Data source configuration (API, database, file, mock)
-- Real-time data visualization
-- Permission-based dashboard access
 
-## 🚀 Quick Start
+```- Real-time data visualization
 
-```bash
-# Install dependencies
-npm install
+LivPulse/- Permission-based dashboard access
 
-# Run development server
-npm run dev
+├── frontend/                 # React/TypeScript Frontend
 
-# Build and run production
-npm run build && npm start
-```
+│   ├── src/## 🚀 Quick Start
 
-## � Demo Accounts
+│   │   ├── components/       # Reusable UI components
 
-| Role | Username | Email | Password | Access Level |
-|------|----------|-------|----------|--------------|
-| Admin | admin | admin@livpulse.com | admin123 | Full system access |
-| Executive | executive1 | exec@livpulse.com | exec123 | Reports & analytics |
-| PM | pm1 | pm@livpulse.com | pm123 | Project management |
-| TPM | tpm1 | tpm@livpulse.com | tpm123 | Technical oversight |
-| EM | em1 | em@livpulse.com | em123 | Engineering management |
+│   │   ├── pages/           # Page components```bash
+
+│   │   ├── contexts/        # React contexts# Install dependencies
+
+│   │   ├── api/            # API integrationnpm install
+
+│   │   └── types/          # TypeScript definitions
+
+│   ├── public/             # Static assets# Run development server
+
+│   └── package.json        # Frontend dependenciesnpm run dev
+
+├── backend/                 # Node.js/Express Backend
+
+│   ├── src/# Build and run production
+
+│   │   ├── routes/         # API route handlersnpm run build && npm start
+
+│   │   ├── services/       # Business logic services```
+
+│   │   ├── templates/      # Handlebars templates
+
+│   │   └── utils/          # Utility functions## � Demo Accounts
+
+│   └── package.json        # Backend dependencies
+
+├── docs/                   # Documentation| Role | Username | Email | Password | Access Level |
+
+│   ├── HLD_LivPulse.md    # High-Level Design|------|----------|-------|----------|--------------|
+
+│   ├── PRD_LivPulse.md    # Product Requirements| Admin | admin | admin@livpulse.com | admin123 | Full system access |
+
+│   └── LivPulse_101.md    # User Guide| Executive | executive1 | exec@livpulse.com | exec123 | Reports & analytics |
+
+├── .github/workflows/      # CI/CD pipelines| PM | pm1 | pm@livpulse.com | pm123 | Project management |
+
+└── package.json           # Monorepo scripts| TPM | tpm1 | tpm@livpulse.com | tpm123 | Technical oversight |
+
+```| EM | em1 | em@livpulse.com | em123 | Engineering management |
+
 | SRE | sre1 | sre@livpulse.com | sre123 | Infrastructure & monitoring |
+
+## 🔐 Authentication System
 
 ## 🏗️ Architecture
 
+### User Roles & Access Control
+
 - **Backend**: Node.js + Express + TypeScript (Port 3001)
-- **Frontend**: React + Material-UI + TypeScript (Port 3000)
-- **Database**: Mock data (easily replaceable with real DB)
-- **Authentication**: JWT-based with role permissions
-- **Security**: bcrypt password hashing, CORS, Helmet.js
 
-## 📊 Enhanced Features
+| Role | Email | Password | Access Level |- **Frontend**: React + Material-UI + TypeScript (Port 3000)
 
-### Core Platform
+|------|-------|----------|-------------|- **Database**: Mock data (easily replaceable with real DB)
+
+| **Admin** | admin@livpulse.com | admin123 | Full system access |- **Authentication**: JWT-based with role permissions
+
+| **Executive** | executive@livpulse.com | executive123 | Executive dashboards |- **Security**: bcrypt password hashing, CORS, Helmet.js
+
+| **Program Manager** | pm@livpulse.com | pm123 | Program management |
+
+| **Tech PM** | tpm@livpulse.com | tpm123 | Technical oversight |## 📊 Enhanced Features
+
+| **Engineering Manager** | em@livpulse.com | em123 | Engineering metrics |
+
+| **SRE** | sre@livpulse.com | sre123 | Operations monitoring |### Core Platform
+
 - Multi-tab reporting (Platform, Backend, Ops, Store, CMS)
-- Executive vs Technical dashboards
-- PDF report generation with custom templates
-- Real-time metrics and alerts
 
-### Admin Module
-- **User Management**: Create, edit, delete users with validation
-- **Advanced Search**: Filter by role, department, status, name
-- **Analytics Dashboard**: User distribution, activity metrics
+## 🚀 Quick Start- Executive vs Technical dashboards
+
+- PDF report generation with custom templates
+
+### Local Development- Real-time metrics and alerts
+
+
+
+```bash### Admin Module
+
+# Clone the repository- **User Management**: Create, edit, delete users with validation
+
+git clone https://github.com/vasistasandeep/LivPulse.git- **Advanced Search**: Filter by role, department, status, name
+
+cd LivPulse- **Analytics Dashboard**: User distribution, activity metrics
+
 - **Role Management**: 6-tier permission system
-- **Security Features**: Password reset, account management
+
+# Install backend dependencies- **Security Features**: Password reset, account management
+
+cd backend && npm install
 
 ### KPI Module
-- **Dashboard Builder**: Drag-and-drop dashboard creation
-- **Widget Library**: 5 widget types with customization
+
+# Install frontend dependencies  - **Dashboard Builder**: Drag-and-drop dashboard creation
+
+cd ../frontend && npm install- **Widget Library**: 5 widget types with customization
+
 - **Data Sources**: Connect external APIs and data sources
-- **Real-time Updates**: Configurable refresh intervals
-- **Permission System**: Role-based dashboard access
 
-## 🌐 API Endpoints
+# Start backend (in backend directory)- **Real-time Updates**: Configurable refresh intervals
 
-### Authentication
+npm run dev- **Permission System**: Role-based dashboard access
+
+
+
+# Start frontend (in frontend directory, new terminal)## 🌐 API Endpoints
+
+npm start
+
+```### Authentication
+
 - `POST /api/auth/login` - User authentication
-- `POST /api/auth/register` - User registration
 
-### Admin Management
-- `GET /api/admin/users` - Get users with pagination & filtering
+### Production URLs- `POST /api/auth/register` - User registration
+
+
+
+**Frontend:** https://livpulse.up.railway.app### Admin Management
+
+**Backend API:** https://livpulse-production-backend.up.railway.app- `GET /api/admin/users` - Get users with pagination & filtering
+
 - `POST /api/admin/users` - Create new user
-- `PUT /api/admin/users/:id` - Update user
-- `DELETE /api/admin/users/:id` - Delete user
-- `GET /api/admin/roles` - Get available roles
-- `GET /api/admin/analytics/users` - User analytics
-- `POST /api/admin/users/:id/reset-password` - Reset password
 
-### KPI Management
+## 🛠️ Technology Stack- `PUT /api/admin/users/:id` - Update user
+
+- `DELETE /api/admin/users/:id` - Delete user
+
+### Frontend- `GET /api/admin/roles` - Get available roles
+
+- React 18 + TypeScript- `GET /api/admin/analytics/users` - User analytics
+
+- Material-UI (MUI)- `POST /api/admin/users/:id/reset-password` - Reset password
+
+- React Router v6
+
+- Axios for API calls### KPI Management
+
 - `GET /api/kpi/dashboards` - Get dashboards
-- `POST /api/kpi/dashboards` - Create dashboard
-- `GET /api/kpi/widgets` - Get widgets
-- `POST /api/kpi/widgets` - Create widget
-- `GET /api/kpi/data-sources` - Get data sources
-- `GET /api/kpi/analytics` - KPI analytics
+
+### Backend  - `POST /api/kpi/dashboards` - Create dashboard
+
+- Node.js + Express.js- `GET /api/kpi/widgets` - Get widgets
+
+- TypeScript- `POST /api/kpi/widgets` - Create widget
+
+- JWT Authentication- `GET /api/kpi/data-sources` - Get data sources
+
+- Puppeteer for PDF generation- `GET /api/kpi/analytics` - KPI analytics
+
+- OpenAI API integration
 
 ## 🚂 Railway Deployment
 
-### Backend Deployment
-1. Connect your GitHub repository to Railway
+### Deployment
+
+- **Frontend:** Vercel (auto-deploy from main branch)### Backend Deployment
+
+- **Backend:** Railway (auto-deploy from main branch)1. Connect your GitHub repository to Railway
+
 2. Deploy from the root directory
-3. Railway will auto-detect Node.js and use the railway.toml configuration
+
+## 📚 Documentation3. Railway will auto-detect Node.js and use the railway.toml configuration
+
 4. Environment variables are automatically configured
 
-### Configuration Files
-- `railway.toml` - Railway deployment configuration
+- **[High-Level Design](./docs/HLD_LivPulse.md)** - Technical architecture
+
+- **[Product Requirements](./docs/PRD_LivPulse.md)** - Feature specifications  ### Configuration Files
+
+- **[User Guide](./docs/LivPulse_101.md)** - End-user documentation- `railway.toml` - Railway deployment configuration
+
 - `package.json` - Dependencies and build scripts
-- `tsconfig.json` - TypeScript configuration
 
-## 📝 Environment Variables
+## 🔧 Environment Configuration- `tsconfig.json` - TypeScript configuration
 
-### Backend (.env)
-```
-NODE_ENV=production
-PORT=3001
-JWT_SECRET=your-super-secret-jwt-key
+
+
+### Backend (.env)## 📝 Environment Variables
+
+```bash
+
+NODE_ENV=production### Backend (.env)
+
+PORT=8000```
+
+JWT_SECRET=your-jwt-secretNODE_ENV=production
+
+OPENAI_API_KEY=your-openai-keyPORT=3001
+
+```JWT_SECRET=your-super-secret-jwt-key
+
 FRONTEND_URL=https://your-frontend-domain.com
-```
 
-## 🧪 Testing
+### Frontend (.env.production)```
+
+```bash
+
+REACT_APP_API_URL=https://livpulse-production-backend.up.railway.app/api## 🧪 Testing
+
+```
 
 ### API Testing
-- Interactive test dashboard available at `/api-test.html`
+
+## 🎯 Core Features- Interactive test dashboard available at `/api-test.html`
+
 - All endpoints documented with examples
-- Health check endpoint: `/health`
 
-### Local Testing
-```bash
-# Run backend
-npm start
+- **🔐 Role-Based Authentication** - 6-tier access control system- Health check endpoint: `/health`
 
-# Test endpoints
+- **📊 Dynamic KPI Dashboards** - Real-time metrics and visualizations  
+
+- **👥 User Management** - Complete CRUD operations with audit trails### Local Testing
+
+- **📈 Platform Analytics** - Multi-platform performance tracking```bash
+
+- **🤖 AI Integration** - Intelligent insights and automated reporting# Run backend
+
+- **📄 PDF Reports** - Custom template-based report generationnpm start
+
+
+
+## 🌐 API Endpoints# Test endpoints
+
 curl http://localhost:3001/health
-curl http://localhost:3001/api/admin/users
-curl http://localhost:3001/api/kpi/dashboards
-```
+
+### Authenticationcurl http://localhost:3001/api/admin/users
+
+- `POST /api/auth/login` - User authenticationcurl http://localhost:3001/api/kpi/dashboards
+
+- `GET /api/auth/me` - Get current user```
+
+- `POST /api/auth/logout` - User logout
 
 ## 🔧 Development
 
-### Project Structure
-```
+### Dashboard & KPIs
+
+- `GET /api/dashboard` - Dashboard data### Project Structure
+
+- `GET /api/kpis` - KPI metrics```
+
 src/
-├── routes/           # API route handlers
-│   ├── adminRoutes.ts    # Admin management APIs
-│   ├── kpiRoutes.ts      # KPI dashboard APIs
+
+### Platform Management├── routes/           # API route handlers
+
+- `GET /api/platform` - Platform overview│   ├── adminRoutes.ts    # Admin management APIs
+
+- `POST /api/platform/update` - Update settings│   ├── kpiRoutes.ts      # KPI dashboard APIs
+
 │   ├── authRoutes.ts     # Authentication APIs
-│   └── ...
-├── services/         # Business logic services
-├── utils/           # Utility functions
-└── app.ts          # Express application setup
+
+### Reports│   └── ...
+
+- `GET /api/reports` - List reports├── services/         # Business logic services
+
+- `POST /api/reports/generate` - Generate new report├── utils/           # Utility functions
+
+- `GET /api/reports/:id/pdf` - Download PDF└── app.ts          # Express application setup
+
 ```
+
+## 🤝 Contributing
 
 ### Adding New Features
-1. Create route handlers in `src/routes/`
-2. Add business logic in `src/services/`
-3. Update type definitions
-4. Add API endpoints to `app.ts`
-5. Test with the API test dashboard
 
-## 🚀 Production Ready Features
+1. Fork the repository1. Create route handlers in `src/routes/`
 
-- ✅ **Security**: JWT authentication, password hashing, CORS protection
+2. Create feature branch (`git checkout -b feature/amazing-feature`)2. Add business logic in `src/services/`
+
+3. Commit changes (`git commit -m 'Add amazing feature'`)3. Update type definitions
+
+4. Push to branch (`git push origin feature/amazing-feature`)4. Add API endpoints to `app.ts`
+
+5. Open Pull Request5. Test with the API test dashboard
+
+
+
+## 📝 License## 🚀 Production Ready Features
+
+
+
+MIT License - see [LICENSE](LICENSE) file for details.- ✅ **Security**: JWT authentication, password hashing, CORS protection
+
 - ✅ **Scalability**: Pagination, efficient filtering, modular architecture
-- ✅ **Performance**: Optimized queries, caching strategy ready
+
+---- ✅ **Performance**: Optimized queries, caching strategy ready
+
 - ✅ **Monitoring**: Health checks, error handling, logging
-- ✅ **Documentation**: Comprehensive API documentation
+
+**LivPulse v2.0** - Empowering OTT platforms with intelligent management solutions.- ✅ **Documentation**: Comprehensive API documentation
 - ✅ **Testing**: Interactive test interface included
 
 ### Frontend (.env)

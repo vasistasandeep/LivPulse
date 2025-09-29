@@ -1,43 +1,141 @@
-{
-  "name": "livpulse-backend",
-  "version": "2.0.0",
-  "description": "Livpulse - Advanced OTT Platform with Admin Management & KPI Dashboards",
-  "main": "dist/server.js",
+{{{{
+
+  "name": "livpulse",
+
+  "version": "2.0.1",  "name": "livpulse",
+
+  "description": "LivPulse v2.0 - Advanced OTT Platform Management System",
+
+  "private": true,  "version": "2.0.1",  "name": "livpulse",  "name": "livpulse-backend",
+
   "scripts": {
-    "start": "npm run clean && npm run build && node dist/server.js",
-    "dev": "nodemon src/server.ts",
-    "build": "tsc",
-    "clean": "rimraf dist",
-    "test": "jest"
-  },
-  "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "helmet": "^7.1.0",
-    "dotenv": "^16.3.1",
-    "axios": "^1.6.0",
-    "jsonwebtoken": "^9.0.2",
-    "bcryptjs": "^2.4.3",
-    "puppeteer": "^22.0.0",
-    "handlebars": "^4.7.8",
-    "dayjs": "^1.11.10",
-    "lodash": "^4.17.21",
-    "openai": "^4.20.0"
-  },
+
+    "dev:backend": "cd backend && npm run dev",  "description": "LivPulse v2.0 - Advanced OTT Platform Management System",
+
+    "dev:frontend": "cd frontend && npm start",
+
+    "build:backend": "cd backend && npm run build",  "private": true,  "version": "2.0.1",  "version": "2.0.0",
+
+    "build:frontend": "cd frontend && npm run build",
+
+    "start:backend": "cd backend && npm start",  "workspaces": [
+
+    "install:all": "cd backend && npm install && cd ../frontend && npm install"
+
+  },    "frontend",  "description": "LivPulse v2.0 - Advanced OTT Platform Management System",  "description": "Livpulse - Advanced OTT Platform with Admin Management & KPI Dashboards",
+
+  "keywords": ["ott", "livpulse", "platform-management", "dashboard"],
+
+  "author": "LivPulse Team",    "backend"
+
+  "license": "MIT",
+
+  "repository": {  ],  "private": true,  "main": "dist/server.js",
+
+    "type": "git",
+
+    "url": "https://github.com/vasistasandeep/LivPulse.git"  "scripts": {
+
+  }
+
+}    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",  "workspaces": [  "scripts": {
+
+    "dev:backend": "cd backend && npm run dev",
+
+    "dev:frontend": "cd frontend && npm start",    "frontend",    "start": "npm run clean && npm run build && node dist/server.js",
+
+    "build": "npm run build:backend && npm run build:frontend",
+
+    "build:backend": "cd backend && npm run build",    "backend"    "dev": "nodemon src/server.ts",
+
+    "build:frontend": "cd frontend && npm run build",
+
+    "start": "npm run start:backend",  ],    "build": "tsc",
+
+    "start:backend": "cd backend && npm start",
+
+    "test": "npm run test:backend && npm run test:frontend",  "scripts": {    "clean": "rimraf dist",
+
+    "test:backend": "cd backend && npm test",
+
+    "test:frontend": "cd frontend && npm test",    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",    "test": "jest"
+
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install"
+
+  },    "dev:backend": "cd backend && npm run dev",  },
+
   "devDependencies": {
-    "@types/express": "^4.17.21",
-    "@types/cors": "^2.8.17",
-    "@types/node": "^20.10.0",
-    "@types/jsonwebtoken": "^9.0.5",
-    "@types/bcryptjs": "^2.4.6",
-    "@types/lodash": "^4.14.202",
-    "typescript": "^5.3.0",
-    "nodemon": "^3.0.2",
-    "ts-node": "^10.9.2",
-    "concurrently": "^8.2.2",
-    "rimraf": "^5.0.5"
+
+    "concurrently": "^8.2.2"    "dev:frontend": "cd frontend && npm start",  "dependencies": {
+
   },
-  "keywords": [
+
+  "keywords": [    "build": "npm run build:backend && npm run build:frontend",    "express": "^4.18.2",
+
+    "ott",
+
+    "livpulse",    "build:backend": "cd backend && npm run build",    "cors": "^2.8.5",
+
+    "platform-management",
+
+    "dashboard",    "build:frontend": "cd frontend && npm run build",    "helmet": "^7.1.0",
+
+    "ai"
+
+  ],    "start": "npm run start:backend",    "dotenv": "^16.3.1",
+
+  "author": "LivPulse Team",
+
+  "license": "MIT",    "start:backend": "cd backend && npm start",    "axios": "^1.6.0",
+
+  "repository": {
+
+    "type": "git",    "test": "npm run test:backend && npm run test:frontend",    "jsonwebtoken": "^9.0.2",
+
+    "url": "https://github.com/vasistasandeep/LivPulse.git"
+
+  }    "test:backend": "cd backend && npm test",    "bcryptjs": "^2.4.3",
+
+}
+    "test:frontend": "cd frontend && npm test",    "puppeteer": "^22.0.0",
+
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install"    "handlebars": "^4.7.8",
+
+  },    "dayjs": "^1.11.10",
+
+  "devDependencies": {    "lodash": "^4.17.21",
+
+    "concurrently": "^8.2.2"    "openai": "^4.20.0"
+
+  },  },
+
+  "keywords": [  "devDependencies": {
+
+    "ott",    "@types/express": "^4.17.21",
+
+    "livpulse",    "@types/cors": "^2.8.17",
+
+    "platform-management",    "@types/node": "^20.10.0",
+
+    "dashboard",    "@types/jsonwebtoken": "^9.0.5",
+
+    "ai"    "@types/bcryptjs": "^2.4.6",
+
+  ],    "@types/lodash": "^4.14.202",
+
+  "author": "LivPulse Team",    "typescript": "^5.3.0",
+
+  "license": "MIT",    "nodemon": "^3.0.2",
+
+  "repository": {    "ts-node": "^10.9.2",
+
+    "type": "git",    "concurrently": "^8.2.2",
+
+    "url": "https://github.com/vasistasandeep/LivPulse.git"    "rimraf": "^5.0.5"
+
+  }  },
+
+}  "keywords": [
     "ott",
     "program-management",
     "reporting",

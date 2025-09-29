@@ -58,7 +58,11 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    // Debug logging
+    console.log('Login attempt:', { email, password: password ? '[REDACTED]' : 'undefined', body: req.body });
+
     if (!email || !password) {
+      console.log('Missing email or password');
       return res.status(400).json({
         success: false,
         error: 'Email and password are required'
@@ -67,7 +71,9 @@ router.post('/login', async (req, res) => {
 
     // Find user
     const user = users.find(u => u.email === email);
+    console.log('User found:', user ? 'yes' : 'no');
     if (!user) {
+      console.log('User not found for email:', email);
       return res.status(401).json({
         success: false,
         error: 'Invalid credentials'
@@ -77,12 +83,20 @@ router.post('/login', async (req, res) => {
     // For demo purposes, accept any password that matches the pattern
     // In production, use proper password hashing
     const validPasswords = {
-      'executive@company.com': 'executive123',
-      'pm@company.com': 'pm123',
-      'sre@company.com': 'sre123'
+      'admin@livpulse.com': 'admin123',
+      'executive@livpulse.com': 'executive123',
+      'pm@livpulse.com': 'pm123',
+      'tpm@livpulse.com': 'tpm123',
+      'em@livpulse.com': 'em123',
+      'sre@livpulse.com': 'sre123'
     };
 
+    console.log('Expected password for', email, ':', validPasswords[email as keyof typeof validPasswords]);
+    console.log('Received password:', password);
+    console.log('Password match:', password === validPasswords[email as keyof typeof validPasswords]);
+
     if (password !== validPasswords[email as keyof typeof validPasswords]) {
+      console.log('Password mismatch');
       return res.status(401).json({
         success: false,
         error: 'Invalid credentials'
