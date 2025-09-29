@@ -18,18 +18,24 @@ dotenv.config();
 
 const app = express();
 
-// Disable CSP completely for development to fix inline script issues
+// Security middleware with production-ready CSP that allows necessary functionality
 const isDevelopment = process.env.NODE_ENV !== 'production';
 app.use(helmet({
-  contentSecurityPolicy: isDevelopment ? false : {
+  contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'", "https:"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https:", "chrome-extension:"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https:", "fonts.googleapis.com"],
+      imgSrc: ["'self'", "data:", "https:", "blob:"],
+      connectSrc: ["'self'", "https:", "wss:", "data:"],
+      fontSrc: ["'self'", "https:", "data:", "fonts.gstatic.com"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'", "https:", "data:"],
+      frameSrc: ["'self'", "https:"],
+      upgradeInsecureRequests: [],
     },
   },
+  crossOriginEmbedderPolicy: false,
 }));
 
 // CORS configuration
