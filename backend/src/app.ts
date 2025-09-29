@@ -12,6 +12,7 @@ import storeRoutes from './routes/storeRoutes';
 import cmsRoutes from './routes/cmsRoutes';
 import reportRoutes from './routes/reportRoutes';
 import authRoutes from './routes/authRoutes';
+import publishingRoutes from './routes/publishingRoutes';
 
 dotenv.config();
 
@@ -51,6 +52,7 @@ app.use('/api/platform', platformRoutes);
 app.use('/api/backend', backendRoutes);
 app.use('/api/ops', opsRoutes);
 app.use('/api/store', storeRoutes);
+app.use('/api/publishing', publishingRoutes);
 app.use('/api/cms', cmsRoutes);
 app.use('/api/reports', reportRoutes);
 

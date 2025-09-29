@@ -1,5 +1,17 @@
 import React from 'react';
 import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  PieChart,
+  Pie,
+  Cell
+} from 'recharts';
+import {
   Box,
   Grid,
   Typography,
@@ -413,7 +425,18 @@ const OpsCDNTab: React.FC = () => {
             dataKey="availability"
             xAxisKey="name"
             colors={['#4caf50']}
-          />
+          >
+            <BarChart width={500} height={300} data={operations.map((ops: any) => ({
+              name: ops.category,
+              availability: ops.performance.availability
+            }))}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="availability" fill="#4caf50" />
+            </BarChart>
+          </ChartContainer>
         </Grid>
 
         <Grid item xs={12} md={6}>
@@ -428,7 +451,18 @@ const OpsCDNTab: React.FC = () => {
             dataKey="utilization"
             xAxisKey="name"
             colors={['#ff9800']}
-          />
+          >
+            <BarChart width={500} height={300} data={operations.map((ops: any) => ({
+              name: ops.category,
+              utilization: ops.capacity.utilization
+            }))}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="utilization" fill="#ff9800" />
+            </BarChart>
+          </ChartContainer>
         </Grid>
       </Grid>
     </Box>

@@ -9,17 +9,23 @@ import {
   CardContent,
   Alert,
   Button,
-  Chip
+  Chip,
+  Container,
+  Paper
 } from '@mui/material';
 import {
   Dashboard,
   Devices,
   Storage,
   Cloud,
-  Store,
+  LiveTv,
   ContentPaste,
+  BugReport,
+  Speed,
+  Assignment,
+  Refresh,
   Download,
-  Refresh
+  Movie
 } from '@mui/icons-material';
 import { useQuery } from '@tanstack/react-query';
 import { dashboardAPI } from '../api/dashboardAPI';
@@ -29,8 +35,11 @@ import MetricCard from '../components/Shared/MetricCard';
 import PlatformTab from '../components/Tabs/PlatformTab';
 import BackendServicesTab from '../components/Tabs/BackendServicesTab';
 import OpsCDNTab from '../components/Tabs/OpsCDNTab';
-import StoreTab from '../components/Tabs/StoreTab';
+import PublishingTab from '../components/Tabs/PublishingTab';
 import CMSTab from '../components/Tabs/CMSTab';
+import BugsTab from '../components/Tabs/BugsTab';
+import SprintFeaturesTab from '../components/Tabs/SprintFeaturesTab';
+import ProgramDetailsTab from '../components/Tabs/ProgramDetailsTab';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -116,12 +125,14 @@ const DashboardPage: React.FC = () => {
   };
 
   const tabs = [
-    { label: 'Overview', icon: <Dashboard /> },
-    { label: 'Platforms', icon: <Devices /> },
-    { label: 'Backend Services', icon: <Storage /> },
-    { label: 'Ops / CDN', icon: <Cloud /> },
-    { label: 'Digital Store', icon: <Store /> },
-    { label: 'CMS', icon: <ContentPaste /> },
+    { label: 'Program Overview', icon: <Dashboard />, component: <ProgramDetailsTab /> },
+    { label: 'Sprint Features', icon: <Assignment />, component: <SprintFeaturesTab /> },
+    { label: 'Bugs Analytics', icon: <BugReport />, component: <BugsTab /> },
+    { label: 'Backend Services', icon: <Storage />, component: <BackendServicesTab /> },
+    { label: 'Platform Analytics', icon: <Devices />, component: <PlatformTab /> },
+    { label: 'Content Publishing', icon: <Movie />, component: <PublishingTab /> },
+    { label: 'CMS Metrics', icon: <ContentPaste />, component: <CMSTab /> },
+    { label: 'Ops & CDN', icon: <Cloud />, component: <OpsCDNTab /> },
   ];
 
   if (overviewLoading || alertsLoading) {
@@ -287,32 +298,11 @@ const DashboardPage: React.FC = () => {
       </Box>
 
       {/* Tab Panels */}
-      <TabPanel value={tabValue} index={0}>
-        {/* Overview content already shown above */}
-        <Typography variant="h6" color="textSecondary" align="center" sx={{ mt: 4 }}>
-          Select a tab above to view detailed metrics for each service area.
-        </Typography>
-      </TabPanel>
-
-      <TabPanel value={tabValue} index={1}>
-        <PlatformTab />
-      </TabPanel>
-
-      <TabPanel value={tabValue} index={2}>
-        <BackendServicesTab />
-      </TabPanel>
-
-      <TabPanel value={tabValue} index={3}>
-        <OpsCDNTab />
-      </TabPanel>
-
-      <TabPanel value={tabValue} index={4}>
-        <StoreTab />
-      </TabPanel>
-
-      <TabPanel value={tabValue} index={5}>
-        <CMSTab />
-      </TabPanel>
+      {tabs.map((tab, index) => (
+        <TabPanel key={index} value={tabValue} index={index}>
+          {tab.component}
+        </TabPanel>
+      ))}
     </Box>
   );
 };

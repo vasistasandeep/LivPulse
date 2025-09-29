@@ -21,6 +21,34 @@ export const dashboardAPI = {
   getTrends: (days?: number) =>
     apiClient.get('/dashboard/trends', { params: { days } }),
 
+  // Publishing APIs
+  getPublishingMetrics: () =>
+    apiClient.get('/publishing/metrics'),
+
+  getPublishingKPIs: () =>
+    apiClient.get('/publishing/kpis'),
+
+  getPublishingComparison: () =>
+    apiClient.get('/publishing/comparison'),
+
+  getPublishingTrends: (contentType: string, days?: number) =>
+    apiClient.get(`/publishing/trends/${contentType}`, { params: { days } }),
+
+  getPublishingStats: (contentType: string) =>
+    apiClient.get(`/publishing/stats/${contentType}`),
+
+  getContentDeliveryStatus: () =>
+    apiClient.get('/publishing/delivery-status'),
+
+  getDRMStatus: () =>
+    apiClient.get('/publishing/drm-status'),
+
+  getSubtitleTracks: () =>
+    apiClient.get('/publishing/subtitle-tracks'),
+
+  getEncodingProfiles: () =>
+    apiClient.get('/publishing/encoding-profiles'),
+
   // Platform APIs
   getPlatformMetrics: () =>
     apiClient.get('/platform/metrics'),

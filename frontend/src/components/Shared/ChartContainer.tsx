@@ -4,27 +4,22 @@ import { Card, CardContent, Typography, Box } from '@mui/material';
 interface ChartContainerProps {
   title: string;
   subtitle?: string;
-  data: any[];
-  type: 'line' | 'area' | 'bar' | 'pie';
+  children: React.ReactNode;
+  height?: number;
+  type?: string;
+  data?: any[];
   dataKey?: string;
   xAxisKey?: string;
-  height?: number;
   colors?: string[];
-  showLegend?: boolean;
-  showGrid?: boolean;
 }
 
 const ChartContainer = ({
   title,
   subtitle,
-  data,
-  type,
-  dataKey = 'value',
-  xAxisKey = 'name',
+  children,
   height = 300,
-  colors = ['#2196f3', '#4caf50', '#ff9800', '#f44336', '#9c27b0'],
-  showLegend = true,
-  showGrid = true
+  type,
+  data = []
 }: ChartContainerProps) => {
   return (
     <Card>
@@ -38,18 +33,19 @@ const ChartContainer = ({
               {subtitle}
             </Typography>
           )}
+          {type && data && (
+            <Typography variant="body2" color="textSecondary">
+              📊 {type.toUpperCase()} Chart - {data.length} data points
+            </Typography>
+          )}
         </Box>
         <Box 
           height={height} 
           display="flex" 
           alignItems="center" 
           justifyContent="center"
-          bgcolor="#f5f5f5"
-          borderRadius={1}
         >
-          <Typography variant="body2" color="textSecondary">
-            📊 {type.toUpperCase()} Chart - {data.length} data points
-          </Typography>
+          {children}
         </Box>
       </CardContent>
     </Card>

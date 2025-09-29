@@ -22,6 +22,7 @@ import {
   Tv,
   ConnectedTv
 } from '@mui/icons-material';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { useQuery } from '@tanstack/react-query';
 import { dashboardAPI } from '../../api/dashboardAPI';
 import LoadingSpinner from '../Shared/LoadingSpinner';
@@ -209,7 +210,16 @@ const PlatformTab = () => {
               dataKey="growth"
               xAxisKey="platform"
               colors={['#2196f3', '#4caf50', '#ff9800', '#f44336', '#9c27b0']}
-            />
+            >
+              <BarChart data={comparison.userGrowth} margin={{ top: 10, right: 30, left: 20, bottom: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="platform" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="growth" fill="#2196f3" />
+              </BarChart>
+            </ChartContainer>
           </Grid>
         )}
 
@@ -223,7 +233,16 @@ const PlatformTab = () => {
               dataKey="score"
               xAxisKey="platform"
               colors={['#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107']}
-            />
+            >
+              <BarChart data={comparison.performance} margin={{ top: 10, right: 30, left: 20, bottom: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="platform" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="score" fill="#4caf50" />
+              </BarChart>
+            </ChartContainer>
           </Grid>
         )}
       </Grid>

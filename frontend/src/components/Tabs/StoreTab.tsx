@@ -15,6 +15,7 @@ import {
   Tv,
   Business
 } from '@mui/icons-material';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { useQuery } from '@tanstack/react-query';
 import { dashboardAPI } from '../../api/dashboardAPI';
 import LoadingSpinner from '../Shared/LoadingSpinner';
@@ -293,15 +294,24 @@ const StoreTab: React.FC = () => {
       <Grid container spacing={3} sx={{ mb: 4 }}>
         {comparison.revenue && (
           <Grid item xs={12} md={6}>
-            <ChartContainer
-              title="Revenue by Platform"
-              subtitle="Monthly revenue comparison"
+                        <ChartContainer
+              title="Revenue Breakdown"
+              subtitle="Revenue by platform"
               data={comparison.revenue}
               type="bar"
               dataKey="revenue"
               xAxisKey="platform"
               colors={['#4caf50']}
-            />
+            >
+              <BarChart data={comparison.revenue} margin={{ top: 10, right: 30, left: 20, bottom: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="platform" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="revenue" fill="#4caf50" />
+              </BarChart>
+            </ChartContainer>
           </Grid>
         )}
 
@@ -315,7 +325,16 @@ const StoreTab: React.FC = () => {
               dataKey="rate"
               xAxisKey="platform"
               colors={['#2196f3']}
-            />
+            >
+              <BarChart data={comparison.conversion} margin={{ top: 10, right: 30, left: 20, bottom: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="platform" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="rate" fill="#2196f3" />
+              </BarChart>
+            </ChartContainer>
           </Grid>
         )}
 
@@ -329,7 +348,16 @@ const StoreTab: React.FC = () => {
               dataKey="sessions"
               xAxisKey="platform"
               colors={['#ff9800']}
-            />
+            >
+              <BarChart data={comparison.users} margin={{ top: 10, right: 30, left: 20, bottom: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="platform" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="sessions" fill="#ff9800" />
+              </BarChart>
+            </ChartContainer>
           </Grid>
         )}
 
@@ -343,7 +371,16 @@ const StoreTab: React.FC = () => {
               dataKey="uptime"
               xAxisKey="platform"
               colors={['#9c27b0']}
-            />
+            >
+              <BarChart data={comparison.performance} margin={{ top: 10, right: 30, left: 20, bottom: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="platform" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="uptime" fill="#9c27b0" />
+              </BarChart>
+            </ChartContainer>
           </Grid>
         )}
       </Grid>

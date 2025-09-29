@@ -24,6 +24,15 @@ import {
   CloudQueue,
   AccountCircle
 } from '@mui/icons-material';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend
+} from 'recharts';
 import { useQuery } from '@tanstack/react-query';
 import { dashboardAPI } from '../../api/dashboardAPI';
 import LoadingSpinner from '../Shared/LoadingSpinner';
@@ -240,7 +249,18 @@ const BackendServicesTab: React.FC = () => {
             dataKey="uptime"
             xAxisKey="name"
             colors={['#4caf50']}
-          />
+          >
+            <BarChart width={500} height={300} data={services.map((s: any) => ({
+              name: s.service,
+              uptime: s.performance.uptime
+            }))}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="uptime" fill="#4caf50" />
+            </BarChart>
+          </ChartContainer>
         </Grid>
 
         <Grid item xs={12} md={6}>
@@ -255,7 +275,18 @@ const BackendServicesTab: React.FC = () => {
             dataKey="responseTime"
             xAxisKey="name"
             colors={['#2196f3']}
-          />
+          >
+            <BarChart width={500} height={300} data={services.map((s: any) => ({
+              name: s.service,
+              responseTime: s.performance.responseTime
+            }))}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="responseTime" fill="#2196f3" />
+            </BarChart>
+          </ChartContainer>
         </Grid>
       </Grid>
 

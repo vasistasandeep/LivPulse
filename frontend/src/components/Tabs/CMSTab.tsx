@@ -1,5 +1,17 @@
 import React from 'react';
 import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  PieChart,
+  Pie,
+  Cell
+} from 'recharts';
+import {
   Box,
   Grid,
   Typography,
@@ -418,7 +430,18 @@ const CMSTab: React.FC = () => {
             dataKey="uptime"
             xAxisKey="name"
             colors={['#4caf50']}
-          />
+          >
+            <BarChart width={500} height={300} data={modules.map((module: any) => ({
+              name: module.module.split(' ')[0],
+              uptime: module.performance.uptime
+            }))}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="uptime" fill="#4caf50" />
+            </BarChart>
+          </ChartContainer>
         </Grid>
 
         <Grid item xs={12} md={6}>
@@ -433,7 +456,18 @@ const CMSTab: React.FC = () => {
             dataKey="quality"
             xAxisKey="name"
             colors={['#2196f3']}
-          />
+          >
+            <BarChart width={500} height={300} data={modules.map((module: any) => ({
+              name: module.module.split(' ')[0],
+              quality: module.quality.assetQualityScore
+            }))}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="quality" fill="#2196f3" />
+            </BarChart>
+          </ChartContainer>
         </Grid>
 
         {processing.assetDistribution && (
@@ -449,7 +483,33 @@ const CMSTab: React.FC = () => {
               type="pie"
               dataKey="value"
               colors={['#4caf50', '#ff9800', '#f44336']}
-            />
+            >
+              <PieChart width={500} height={300}>
+                <Pie
+                  data={[
+                    { name: 'Published', value: processing.assetDistribution.reduce((sum: number, item: any) => sum + item.published, 0) },
+                    { name: 'Pending', value: processing.assetDistribution.reduce((sum: number, item: any) => sum + item.pending, 0) },
+                    { name: 'Failed', value: processing.assetDistribution.reduce((sum: number, item: any) => sum + item.failed, 0) }
+                  ]}
+                  cx={250}
+                  cy={150}
+                  labelLine={false}
+                  outerRadius={100}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {[
+                    { name: 'Published', value: processing.assetDistribution.reduce((sum: number, item: any) => sum + item.published, 0) },
+                    { name: 'Pending', value: processing.assetDistribution.reduce((sum: number, item: any) => sum + item.pending, 0) },
+                    { name: 'Failed', value: processing.assetDistribution.reduce((sum: number, item: any) => sum + item.failed, 0) }
+                  ].map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={['#4caf50', '#ff9800', '#f44336'][index]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </ChartContainer>
           </Grid>
         )}
 
@@ -465,7 +525,19 @@ const CMSTab: React.FC = () => {
             dataKey="time"
             xAxisKey="name"
             colors={['#ff9800']}
-          />
+          >
+            <BarChart data={modules.map((module: any) => ({
+              name: module.module.split(' ')[0],
+              time: module.performance.processingTime
+            }))} margin={{ top: 10, right: 30, left: 20, bottom: 10 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="time" fill="#ff9800" />
+            </BarChart>
+          </ChartContainer>
         </Grid>
       </Grid>
     </Box>
