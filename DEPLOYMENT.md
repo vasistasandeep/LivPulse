@@ -1,14 +1,55 @@
-# 🚀 Livpulse - End-to-End Deployment Guide
+# � LivPulse v2.0 - Railway & Multi-Platform Deployment Guide
 
-## 📊 Demo-Ready Deployment Options
-
-Since Railway deployment is experiencing 502 errors, here are multiple reliable deployment options for your demo:
+## 🆕 What's New in v2.0
+- ✅ **Advanced Admin Management System** with user analytics
+- ✅ **KPI Dashboard Builder** with widget library  
+- ✅ **Enhanced Security** with JWT and role-based access
+- ✅ **Production-Ready APIs** for admin and KPI management
 
 ---
 
-## 🎯 Quick Demo Setup (Recommended)
+## 🎯 Railway Deployment (Primary Option)
 
-### Option A: Vercel (Frontend) + Render (Backend)
+### Quick Railway Setup
+
+1. **Prepare for Deployment**:
+   ```bash
+   # Ensure your code is ready
+   npm run build
+   npm test  # if you have tests
+   ```
+
+2. **Deploy to Railway**:
+   - Go to [Railway.app](https://railway.app)
+   - Click "New Project" → "Deploy from GitHub repo"
+   - Select your LivPulse repository
+   - Railway auto-detects Node.js and uses `railway.toml`
+
+3. **Environment Variables** (optional):
+   ```
+   JWT_SECRET=your-super-secret-key
+   NODE_ENV=production
+   ```
+
+4. **Test Your Deployment**:
+   ```bash
+   # Your Railway URL will be: https://livpulse-production.up.railway.app
+   curl https://your-app.railway.app/health
+   curl https://your-app.railway.app/api/admin/users
+   ```
+
+### Railway Features You Get:
+- ✅ **Auto-scaling** based on traffic
+- ✅ **Custom domains** for production
+- ✅ **Automatic SSL** certificates
+- ✅ **Built-in monitoring** and logs
+- ✅ **Database add-ons** when needed
+
+---
+
+## 📊 Alternative Deployment Options
+
+### Option A: Render.com (Backup)
 
 #### 1. Deploy Backend to Render.com
 ```bash

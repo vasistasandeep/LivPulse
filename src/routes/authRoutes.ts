@@ -8,21 +8,42 @@ const router = express.Router();
 const users = [
   {
     id: 1,
-    email: 'executive@company.com',
+    email: 'admin@livpulse.com',
+    password: '$2a$10$rOzJqKqK5rKqK5rKqK5rKOzJqKqK5rKqK5rKqK5rKOzJqKqK5rKqK5', // password: admin123
+    role: 'admin',
+    name: 'Admin User'
+  },
+  {
+    id: 2,
+    email: 'executive@livpulse.com',
     password: '$2a$10$rOzJqKqK5rKqK5rKqK5rKOzJqKqK5rKqK5rKqK5rKOzJqKqK5rKqK5', // password: executive123
     role: 'executive',
     name: 'Executive User'
   },
   {
-    id: 2,
-    email: 'pm@company.com',
+    id: 3,
+    email: 'pm@livpulse.com',
     password: '$2a$10$rOzJqKqK5rKqK5rKqK5rKOzJqKqK5rKqK5rKqK5rKOzJqKqK5rKqK5', // password: pm123
     role: 'pm',
     name: 'Program Manager'
   },
   {
-    id: 3,
-    email: 'sre@company.com',
+    id: 4,
+    email: 'tpm@livpulse.com',
+    password: '$2a$10$rOzJqKqK5rKqK5rKqK5rKOzJqKqK5rKqK5rKqK5rKOzJqKqK5rKqK5', // password: tpm123
+    role: 'tpm',
+    name: 'Technical Program Manager'
+  },
+  {
+    id: 5,
+    email: 'em@livpulse.com',
+    password: '$2a$10$rOzJqKqK5rKqK5rKqK5rKOzJqKqK5rKqK5rKqK5rKOzJqKqK5rKqK5', // password: em123
+    role: 'em',
+    name: 'Engineering Manager'
+  },
+  {
+    id: 6,
+    email: 'sre@livpulse.com',
     password: '$2a$10$rOzJqKqK5rKqK5rKqK5rKOzJqKqK5rKqK5rKqK5rKOzJqKqK5rKqK5', // password: sre123
     role: 'sre',
     name: 'Site Reliability Engineer'
@@ -56,9 +77,12 @@ router.post('/login', async (req, res) => {
     // For demo purposes, accept any password that matches the pattern
     // In production, use proper password hashing
     const validPasswords = {
-      'executive@company.com': 'executive123',
-      'pm@company.com': 'pm123',
-      'sre@company.com': 'sre123'
+      'admin@livpulse.com': 'admin123',
+      'executive@livpulse.com': 'executive123',
+      'pm@livpulse.com': 'pm123',
+      'tpm@livpulse.com': 'tpm123',
+      'em@livpulse.com': 'em123',
+      'sre@livpulse.com': 'sre123'
     };
 
     if (password !== validPasswords[email as keyof typeof validPasswords]) {

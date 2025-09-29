@@ -1,7 +1,7 @@
 {
   "name": "livpulse-frontend",
   "version": "1.0.0",
-  "description": "Livpulse - OTT Publishing & Program Management Platform",
+  "description": "LivPulse v2.0 - Advanced OTT Platform Management System",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.1",

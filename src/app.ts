@@ -13,6 +13,7 @@ import cmsRoutes from './routes/cmsRoutes';
 import reportRoutes from './routes/reportRoutes';
 import authRoutes from './routes/authRoutes';
 import adminRoutes from './routes/adminRoutes';
+import kpiRoutes from './routes/kpiRoutes';
 
 dotenv.config();
 
@@ -67,14 +68,49 @@ app.get('/', (req, res) => {
   res.status(200).json({
     success: true,
     message: 'Livpulse Backend API is running',
-    version: '1.0.0',
+    version: '2.0.0',
     timestamp: new Date().toISOString(),
+    features: [
+      'User Authentication & Authorization',
+      'Advanced Admin Management System', 
+      'KPI Dashboard Builder',
+      'Widget Library & Data Sources',
+      'Role-based Access Control',
+      'Analytics & Reporting'
+    ],
     endpoints: {
       health: '/health',
       api: '/api',
+      auth: '/api/auth',
+      admin: '/api/admin',
+      kpi: '/api/kpi',
       dashboard: '/api/dashboard',
-      publishing: '/api/publishing',
-      admin: '/api/admin'
+      reports: '/api/reports'
+    },
+    modules: {
+      admin: {
+        description: 'Complete user management system',
+        endpoints: [
+          'GET /api/admin/users - User management with pagination & filtering',
+          'POST /api/admin/users - Create new users',
+          'PUT /api/admin/users/:id - Update user details',
+          'DELETE /api/admin/users/:id - Delete users',
+          'GET /api/admin/roles - Role management',
+          'GET /api/admin/analytics/users - User analytics',
+          'GET /api/admin/settings - System settings'
+        ]
+      },
+      kpi: {
+        description: 'Dynamic dashboard and KPI management',
+        endpoints: [
+          'GET /api/kpi/dashboards - Dashboard management',
+          'POST /api/kpi/dashboards - Create dashboards',
+          'GET /api/kpi/widgets - Widget library',
+          'POST /api/kpi/widgets - Create widgets',
+          'GET /api/kpi/data-sources - Data source management',
+          'GET /api/kpi/analytics - KPI analytics'
+        ]
+      }
     }
   });
 });
@@ -89,7 +125,7 @@ app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'OK',
     timestamp: new Date().toISOString(),
-    service: 'Livpulse Backend API',
+    service: 'LivPulse Platform Backend',
     version: '1.0.0',
     uptime: process.uptime()
   });
@@ -105,6 +141,7 @@ app.use('/api/store', storeRoutes);
 app.use('/api/cms', cmsRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/kpi', kpiRoutes);
 
 // Error handling middleware
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

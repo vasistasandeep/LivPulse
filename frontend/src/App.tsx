@@ -6,6 +6,7 @@ import Layout from './components/Layout/Layout';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import AdminPage from './pages/AdminPage';
+import KPIPage from './pages/KPIPage';
 import SummaryPage from './pages/SummaryPage';
 import PublishingPage from './pages/PublishingPage';
 import PlatformPage from './pages/PlatformPage';
@@ -47,6 +48,7 @@ function App() {
         <Route path="/summary" element={<SummaryPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/kpi" element={<KPIPage />} />
         <Route path="/platforms" element={<PlatformPage />} />
         <Route path="/backend" element={<BackendPage />} />
         <Route path="/operations" element={<OperationsPage />} />

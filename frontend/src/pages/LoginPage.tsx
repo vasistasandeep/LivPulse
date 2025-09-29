@@ -24,9 +24,12 @@ const LoginPage: React.FC = () => {
   const { login } = useAuth();
 
   const demoAccounts = [
-    { email: 'executive@company.com', password: 'executive123', role: 'Executive' },
-    { email: 'pm@company.com', password: 'pm123', role: 'Program Manager' },
-    { email: 'sre@company.com', password: 'sre123', role: 'SRE' }
+    { email: 'admin@livpulse.com', password: 'admin123', role: 'Admin', priority: true },
+    { email: 'executive@livpulse.com', password: 'executive123', role: 'Executive' },
+    { email: 'pm@livpulse.com', password: 'pm123', role: 'Program Manager' },
+    { email: 'tpm@livpulse.com', password: 'tpm123', role: 'Technical PM' },
+    { email: 'em@livpulse.com', password: 'em123', role: 'Engineering Manager' },
+    { email: 'sre@livpulse.com', password: 'sre123', role: 'SRE' }
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -65,11 +68,11 @@ const LoginPage: React.FC = () => {
         </Avatar>
         
         <Typography component="h1" variant="h4" gutterBottom>
-          OTT Program Reporting
+          LivPulse Platform
         </Typography>
         
         <Typography variant="h6" color="textSecondary" gutterBottom>
-          Sign in to your account
+          Advanced OTT Platform Management
         </Typography>
 
         <Card sx={{ mt: 3, width: '100%' }}>
@@ -137,11 +140,12 @@ const LoginPage: React.FC = () => {
                     sx={{
                       p: 2,
                       border: '1px solid',
-                      borderColor: 'divider',
+                      borderColor: account.role === 'Admin' ? 'error.main' : 'divider',
                       borderRadius: 1,
                       cursor: 'pointer',
+                      backgroundColor: account.role === 'Admin' ? 'error.50' : 'transparent',
                       '&:hover': {
-                        backgroundColor: 'action.hover',
+                        backgroundColor: account.role === 'Admin' ? 'error.100' : 'action.hover',
                       },
                     }}
                     onClick={() => handleDemoLogin(account.email, account.password)}
@@ -158,7 +162,8 @@ const LoginPage: React.FC = () => {
                       <Chip
                         label={account.role}
                         size="small"
-                        color={account.role === 'Executive' ? 'error' : 'primary'}
+                        color={account.role === 'Admin' ? 'error' : account.role === 'Executive' ? 'warning' : 'primary'}
+                        variant={account.role === 'Admin' ? 'filled' : 'outlined'}
                       />
                     </Box>
                   </Box>
@@ -169,7 +174,7 @@ const LoginPage: React.FC = () => {
         </Card>
 
         <Typography variant="body2" color="textSecondary" align="center" sx={{ mt: 3 }}>
-          This is a demo application with mock data for OTT Program Management Reporting.
+          LivPulse v2.0 - Advanced OTT Platform with Admin & KPI Management System
         </Typography>
       </Box>
     </Container>

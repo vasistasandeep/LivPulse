@@ -34,6 +34,7 @@ import {
   AdminPanelSettings,
   Summarize,
   InfoOutlined,
+  BarChart,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -55,6 +56,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     { text: 'Platform Summary', icon: <Summarize />, path: '/summary', roles: ['all'] },
     { text: 'Analytics Dashboard', icon: <Dashboard />, path: '/dashboard', roles: ['all'] },
     { text: 'Admin Panel', icon: <AdminPanelSettings />, path: '/admin', roles: ['admin'] },
+    { text: 'KPI Dashboards', icon: <BarChart />, path: '/kpi', roles: ['admin'] },
     { text: 'Publishing Hub', icon: <Publish />, path: '/publishing', roles: ['admin', 'pm', 'tpm', 'em'] },
     { text: 'Platform Analytics', icon: <Devices />, path: '/platforms', roles: ['all'] },
     { text: 'Backend Services', icon: <Storage />, path: '/backend', roles: ['admin', 'sre', 'em'] },
@@ -92,7 +94,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
             Livpulse
           </Typography>
-          <Tooltip title="OTT Publishing & Program Management Platform">
+          <Tooltip title="LivPulse - Advanced OTT Platform Management">
             <InfoOutlined fontSize="small" color="action" />
           </Tooltip>
         </Box>

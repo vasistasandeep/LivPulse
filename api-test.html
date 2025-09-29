@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LivPulse API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #1976d2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #1565c0;
+        }
+        .result {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .success {
+            border-color: #28a745;
+            background-color: #d4edda;
+        }
+        .error {
+            border-color: #dc3545;
+            background-color: #f8d7da;
+        }
+        h1, h2 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 LivPulse API Test Dashboard</h1>
+    <p>Testing the new Admin and KPI management APIs</p>
+
+    <!-- Admin API Tests -->
+    <div class="test-section">
+        <h2>👥 Admin API Tests</h2>
+        <button onclick="testAdminUsers()">Get Users</button>
+        <button onclick="testAdminRoles()">Get Roles</button>
+        <button onclick="testAdminAnalytics()">Get User Analytics</button>
+        <button onclick="testAdminSettings()">Get Settings</button>
+        <div id="admin-result" class="result"></div>
+    </div>
+
+    <!-- KPI API Tests -->
+    <div class="test-section">
+        <h2>📊 KPI API Tests</h2>
+        <button onclick="testKPIDashboards()">Get Dashboards</button>
+        <button onclick="testKPIWidgets()">Get Widgets</button>
+        <button onclick="testKPIDataSources()">Get Data Sources</button>
+        <button onclick="testKPIAnalytics()">Get KPI Analytics</button>
+        <div id="kpi-result" class="result"></div>
+    </div>
+
+    <!-- Create Tests -->
+    <div class="test-section">
+        <h2>✨ Create Operations</h2>
+        <button onclick="createTestUser()">Create Test User</button>
+        <button onclick="createTestDashboard()">Create Test Dashboard</button>
+        <button onclick="createTestWidget()">Create Test Widget</button>
+        <button onclick="createTestDataSource()">Create Test Data Source</button>
+        <div id="create-result" class="result"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3001/api';
+        
+        async function makeRequest(url, options = {}) {
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    },
+                    ...options
+                });
+                const data = await response.json();
+                return { success: response.ok, data, status: response.status };
+            } catch (error) {
+                return { success: false, error: error.message };
+            }
+        }
+
+        function displayResult(elementId, result) {
+            const element = document.getElementById(elementId);
+            element.className = `result ${result.success ? 'success' : 'error'}`;
+            element.textContent = JSON.stringify(result, null, 2);
+        }
+
+        // Admin API Tests
+        async function testAdminUsers() {
+            const result = await makeRequest(`${API_BASE}/admin/users`);
+            displayResult('admin-result', result);
+        }
+
+        async function testAdminRoles() {
+            const result = await makeRequest(`${API_BASE}/admin/roles`);
+            displayResult('admin-result', result);
+        }
+
+        async function testAdminAnalytics() {
+            const result = await makeRequest(`${API_BASE}/admin/analytics/users`);
+            displayResult('admin-result', result);
+        }
+
+        async function testAdminSettings() {
+            const result = await makeRequest(`${API_BASE}/admin/settings`);
+            displayResult('admin-result', result);
+        }
+
+        // KPI API Tests
+        async function testKPIDashboards() {
+            const result = await makeRequest(`${API_BASE}/kpi/dashboards`);
+            displayResult('kpi-result', result);
+        }
+
+        async function testKPIWidgets() {
+            const result = await makeRequest(`${API_BASE}/kpi/widgets`);
+            displayResult('kpi-result', result);
+        }
+
+        async function testKPIDataSources() {
+            const result = await makeRequest(`${API_BASE}/kpi/data-sources`);
+            displayResult('kpi-result', result);
+        }
+
+        async function testKPIAnalytics() {
+            const result = await makeRequest(`${API_BASE}/kpi/analytics`);
+            displayResult('kpi-result', result);
+        }
+
+        // Create Operations
+        async function createTestUser() {
+            const testUser = {
+                username: 'testuser_' + Date.now(),
+                email: 'test@example.com',
+                name: 'Test User',
+                role: 'pm',
+                department: 'Testing',
+                phone: '+1-555-TEST',
+                password: 'testpassword123',
+                permissions: ['view_dashboards']
+            };
+
+            const result = await makeRequest(`${API_BASE}/admin/users`, {
+                method: 'POST',
+                body: JSON.stringify(testUser)
+            });
+            displayResult('create-result', result);
+        }
+
+        async function createTestDashboard() {
+            const testDashboard = {
+                name: 'Test Dashboard ' + Date.now(),
+                description: 'A test dashboard for validation',
+                category: 'technical',
+                widgets: [],
+                permissions: {
+                    view: ['admin', 'pm'],
+                    edit: ['admin']
+                }
+            };
+
+            const result = await makeRequest(`${API_BASE}/kpi/dashboards`, {
+                method: 'POST',
+                body: JSON.stringify(testDashboard)
+            });
+            displayResult('create-result', result);
+        }
+
+        async function createTestWidget() {
+            const testWidget = {
+                type: 'metric',
+                title: 'Test Metric ' + Date.now(),
+                description: 'A test metric widget',
+                dataSource: 'users-api',
+                config: {
+                    format: 'number',
+                    refreshInterval: 60
+                },
+                permissions: ['admin', 'pm']
+            };
+
+            const result = await makeRequest(`${API_BASE}/kpi/widgets`, {
+                method: 'POST',
+                body: JSON.stringify(testWidget)
+            });
+            displayResult('create-result', result);
+        }
+
+        async function createTestDataSource() {
+            const testDataSource = {
+                name: 'Test API Source ' + Date.now(),
+                type: 'api',
+                config: {
+                    url: 'https://jsonplaceholder.typicode.com/posts',
+                    method: 'GET',
+                    refreshInterval: 300
+                },
+                fields: [
+                    { name: 'id', type: 'number', label: 'ID' },
+                    { name: 'title', type: 'string', label: 'Title' },
+                    { name: 'body', type: 'string', label: 'Body' }
+                ]
+            };
+
+            const result = await makeRequest(`${API_BASE}/kpi/data-sources`, {
+                method: 'POST',
+                body: JSON.stringify(testDataSource)
+            });
+            displayResult('create-result', result);
+        }
+
+        // Auto-run basic tests on load
+        window.onload = function() {
+            console.log('🚀 LivPulse API Test Dashboard Loaded');
+            // Run a quick health check
+            makeRequest(`${API_BASE}/../health`).then(result => {
+                console.log('Health Check:', result);
+            });
+        };
+    </script>
+</body>
+</html>

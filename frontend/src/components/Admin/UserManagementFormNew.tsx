@@ -66,7 +66,7 @@ import {
   Clear,
 } from '@mui/icons-material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import adminAPI from '../../api/adminAPI';
+import { adminAPI } from '../../api/adminAPI';
 
 interface User {
   id: number;
