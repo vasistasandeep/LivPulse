@@ -1,53 +1,59 @@
-import apiClient from './client';
+import { apiClient } from './client';
 
-export const dashboardAPI = {
-  // Dashboard overview
-  getOverview: () =>
-    apiClient.get('/dashboard/overview'),
+// Types for dashboard system
+export interface DashboardWidget {
+  id: string;
+  type: 'metric' | 'chart' | 'table' | 'gauge';
+  title: string;
+  position: { x: number; y: number; w: number; h: number };
+  dataSource: string;
+  config?: any;
+}
 
-  // KPIs
-  getKPIs: () =>
-    apiClient.get('/dashboard/kpis'),
+export interface DashboardTemplate {
+  id: string;
+  name: string;
+  description: string;
+  widgets: DashboardWidget[];
+}
 
-  // Alerts
-  getAlerts: () =>
-    apiClient.get('/dashboard/alerts'),
+export interface DashboardData {
+  [key: string]: any;
+}
 
-  // Health status
-  getHealth: () =>
-    apiClient.get('/dashboard/health'),
+// Get dashboard template based on user role
+export const getDashboardTemplate = async (): Promise<DashboardTemplate> => {
+  const response = await apiClient.get('/dashboard/template');
+  return response.data.data;
+};
 
-  // Trends
-  getTrends: (days?: number) =>
-    apiClient.get('/dashboard/trends', { params: { days } }),
+// Get dashboard data for a specific data source
+export const getDashboardData = async (dataSource: string): Promise<DashboardData> => {
+  const response = await apiClient.get(`/dashboard/data/${dataSource}`);
+  return response.data.data;
+};
 
-  // Publishing APIs
-  getPublishingMetrics: () =>
-    apiClient.get('/publishing/metrics'),
+// Update dashboard template (admin only)
+export const updateDashboardTemplate = async (
+  role: string,
+  template: Partial<DashboardTemplate>
+): Promise<DashboardTemplate> => {
+  const response = await apiClient.put(`/dashboard/template/${role}`, { template });
+  return response.data.data;
+};
 
-  getPublishingKPIs: () =>
-    apiClient.get('/publishing/kpis'),
+// Get multiple data sources at once
+export const getMultipleDashboardData = async (dataSources: string[]): Promise<Record<string, DashboardData>> => {
+  const promises = dataSources.map(dataSource => getDashboardData(dataSource));
+  const results = await Promise.all(promises);
 
-  getPublishingComparison: () =>
-    apiClient.get('/publishing/comparison'),
+  const result: Record<string, DashboardData> = {};
+  dataSources.forEach((dataSource, index) => {
+    result[dataSource] = results[index];
+  });
 
-  getPublishingTrends: (contentType: string, days?: number) =>
-    apiClient.get(`/publishing/trends/${contentType}`, { params: { days } }),
-
-  getPublishingStats: (contentType: string) =>
-    apiClient.get(`/publishing/stats/${contentType}`),
-
-  getContentDeliveryStatus: () =>
-    apiClient.get('/publishing/delivery-status'),
-
-  getDRMStatus: () =>
-    apiClient.get('/publishing/drm-status'),
-
-  getSubtitleTracks: () =>
-    apiClient.get('/publishing/subtitle-tracks'),
-
-  getEncodingProfiles: () =>
-    apiClient.get('/publishing/encoding-profiles'),
+  return result;
+};
 
   // Platform APIs
   getPlatformMetrics: () =>

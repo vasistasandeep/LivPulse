@@ -1,304 +1,265 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
-  Tabs,
-  Tab,
-  Typography,
   Grid,
   Card,
   CardContent,
+  Typography,
   Alert,
   Button,
-  Chip
+  Chip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  MenuItem,
+  Fab
 } from '@mui/material';
 import {
-  Dashboard,
-  Devices,
-  Storage,
-  Cloud,
-  ContentPaste,
-  BugReport,
-  Assignment,
   Refresh,
-  Download,
-  Movie
+  Edit,
+  Add,
+  Save,
+  Cancel
 } from '@mui/icons-material';
-import { useQuery } from '@tanstack/react-query';
-import { dashboardAPI } from '../api/dashboardAPI';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  getDashboardTemplate,
+  getMultipleDashboardData,
+  updateDashboardTemplate,
+  DashboardWidget,
+  DashboardTemplate
+} from '../api/dashboardAPI';
 import { useAuth } from '../contexts/AuthContext';
 import LoadingSpinner from '../components/Shared/LoadingSpinner';
-import MetricCard from '../components/Shared/MetricCard';
-import PlatformTab from '../components/Tabs/PlatformTab';
-import BackendServicesTab from '../components/Tabs/BackendServicesTab';
-import OpsCDNTab from '../components/Tabs/OpsCDNTab';
-import PublishingTab from '../components/Tabs/PublishingTab';
-import CMSTab from '../components/Tabs/CMSTab';
-import BugsTab from '../components/Tabs/BugsTab';
-import SprintFeaturesTab from '../components/Tabs/SprintFeaturesTab';
-import ProgramDetailsTab from '../components/Tabs/ProgramDetailsTab';
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`dashboard-tabpanel-${index}`}
-      aria-labelledby={`dashboard-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
-    </div>
-  );
-}
+import MetricWidget from '../components/Dashboard/MetricWidget';
+import ChartWidget from '../components/Dashboard/ChartWidget';
+import TableWidget from '../components/Dashboard/TableWidget';
+import GaugeWidget from '../components/Dashboard/GaugeWidget';
 
 const DashboardPage: React.FC = () => {
-  const [tabValue, setTabValue] = useState(0);
-  const { isExecutive } = useAuth();
+  const { user, isAdmin } = useAuth();
+  const queryClient = useQueryClient();
+  const [editMode, setEditMode] = useState(false);
+  const [editedTemplate, setEditedTemplate] = useState<DashboardTemplate | null>(null);
 
-  // Fetch dashboard overview data
-  const { 
-    data: overviewData, 
-    isLoading: overviewLoading, 
-    error: overviewError,
-    refetch: refetchOverview 
-  } = useQuery({
-    queryKey: ['dashboard-overview'],
-    queryFn: () => dashboardAPI.getOverview(),
-    refetchInterval: 30000, // Refresh every 30 seconds
-    retry: 2, // Retry failed requests twice before showing an error
-    refetchOnWindowFocus: false, // Don't refetch when window regains focus
+  // Fetch dashboard template
+  const { data: template, isLoading: templateLoading, error: templateError } = useQuery({
+    queryKey: ['dashboard-template'],
+    queryFn: getDashboardTemplate,
   });
 
-  // Fetch alerts
-  const { 
-    data: alertsData, 
-    isLoading: alertsLoading,
-    error: alertsError,
-    refetch: refetchAlerts 
-  } = useQuery({
-    queryKey: ['dashboard-alerts'],
-    queryFn: () => dashboardAPI.getAlerts(),
-    refetchInterval: 15000, // Refresh every 15 seconds
-    retry: 2, // Retry failed requests twice before showing an error
-    refetchOnWindowFocus: false, // Don't refetch when window regains focus
+  // Fetch dashboard data for all widgets
+  const dataSources = template?.widgets?.map(w => w.dataSource).filter((v, i, a) => a.indexOf(v) === i) || [];
+  const { data: dashboardData, isLoading: dataLoading } = useQuery({
+    queryKey: ['dashboard-data', dataSources],
+    queryFn: () => getMultipleDashboardData(dataSources),
+    enabled: dataSources.length > 0,
   });
 
-  // Handle retry for failed requests
-  const handleRetry = () => {
-    refetchOverview();
-    refetchAlerts();
-  };
+  // Update template mutation
+  const updateTemplateMutation = useMutation({
+    mutationFn: ({ role, template }: { role: string; template: Partial<DashboardTemplate> }) =>
+      updateDashboardTemplate(role, template),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['dashboard-template'] });
+      setEditMode(false);
+      setEditedTemplate(null);
+    },
+  });
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setTabValue(newValue);
-  };
-
-  const handleExportReport = async () => {
-    try {
-      const response = await dashboardAPI.getExecutiveReport('pdf');
-      const blob = new Blob([response.data], { type: 'application/pdf' });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `executive-report-${new Date().toISOString().split('T')[0]}.pdf`;
-      link.click();
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('Export failed:', error);
+  const handleEditToggle = () => {
+    if (editMode) {
+      setEditMode(false);
+      setEditedTemplate(null);
+    } else {
+      setEditMode(true);
+      setEditedTemplate(template || null);
     }
   };
 
-  const tabs = [
-    { label: 'Program Overview', icon: <Dashboard />, component: <ProgramDetailsTab /> },
-    { label: 'Sprint Features', icon: <Assignment />, component: <SprintFeaturesTab /> },
-    { label: 'Bugs Analytics', icon: <BugReport />, component: <BugsTab /> },
-    { label: 'Backend Services', icon: <Storage />, component: <BackendServicesTab /> },
-    { label: 'Platform Analytics', icon: <Devices />, component: <PlatformTab /> },
-    { label: 'Content Publishing', icon: <Movie />, component: <PublishingTab /> },
-    { label: 'CMS Metrics', icon: <ContentPaste />, component: <CMSTab /> },
-    { label: 'Ops & CDN', icon: <Cloud />, component: <OpsCDNTab /> },
-  ];
+  const handleSaveTemplate = () => {
+    if (editedTemplate && user?.role) {
+      updateTemplateMutation.mutate({
+        role: user.role,
+        template: editedTemplate
+      });
+    }
+  };
 
-  if (overviewLoading || alertsLoading) {
-    return <LoadingSpinner size={60} message="Loading dashboard..." />;
+  const handleWidgetUpdate = (widgetId: string, updates: Partial<DashboardWidget>) => {
+    if (editedTemplate) {
+      setEditedTemplate({
+        ...editedTemplate,
+        widgets: editedTemplate.widgets.map(widget =>
+          widget.id === widgetId ? { ...widget, ...updates } : widget
+        )
+      });
+    }
+  };
+
+  const renderWidget = (widget: DashboardWidget) => {
+    const data = dashboardData?.[widget.dataSource];
+
+    switch (widget.type) {
+      case 'metric':
+        return <MetricWidget key={widget.id} widget={widget} data={data} />;
+      case 'chart':
+        return <ChartWidget key={widget.id} widget={widget} data={data} />;
+      case 'table':
+        return <TableWidget key={widget.id} widget={widget} data={data} />;
+      case 'gauge':
+        return <GaugeWidget key={widget.id} widget={widget} data={data} />;
+      default:
+        return (
+          <Card key={widget.id} sx={{ height: '100%' }}>
+            <CardContent>
+              <Typography variant="h6">{widget.title}</Typography>
+              <Typography color="text.secondary">Widget type not supported</Typography>
+            </CardContent>
+          </Card>
+        );
+    }
+  };
+
+  if (templateLoading || dataLoading) {
+    return <LoadingSpinner />;
   }
-  const overview = overviewData?.data?.data;
-  const alerts = alertsData?.data?.data;
+
+  if (templateError) {
+    return (
+      <Alert severity="error">
+        Failed to load dashboard. Please try again later.
+      </Alert>
+    );
+  }
+
+  if (!template) {
+    return (
+      <Alert severity="info">
+        No dashboard template found for your role. Please contact an administrator.
+      </Alert>
+    );
+  }
 
   return (
-    <Box>
-      {(overviewError || alertsError) && (
-        <Box p={2}>
-          <Alert 
-            severity="error" 
-            action={
-              <Button 
-                color="inherit" 
-                size="small" 
-                onClick={handleRetry}
-                disabled={overviewLoading || alertsLoading}
-              >
-                Retry
-              </Button>
-            }
-          >
-            Failed to load dashboard data. Please try again.
-          </Alert>
+    <Box sx={{ p: 3 }}>
+      {/* Header */}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+        <Box>
+          <Typography variant="h4" component="h1" gutterBottom>
+            {template.name}
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            {template.description}
+          </Typography>
+          <Chip
+            label={`Role: ${user?.role?.toUpperCase()}`}
+            color="primary"
+            size="small"
+            sx={{ mt: 1 }}
+          />
         </Box>
-      )}
-      
-      <Box display="flex" gap={2} p={2}>
-        <Button
-          variant="outlined"
-          startIcon={<Refresh />}
-          onClick={() => {
-            refetchOverview();
-            refetchAlerts();
-          }}
-          disabled={overviewLoading || alertsLoading}
-        >
-          Refresh
-        </Button>
-          {isExecutive && (
+
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <Button
+            startIcon={<Refresh />}
+            onClick={() => queryClient.invalidateQueries({ queryKey: ['dashboard-data'] })}
+          >
+            Refresh Data
+          </Button>
+
+          {isAdmin && (
             <Button
-              variant="contained"
-              startIcon={<Download />}
-              onClick={handleExportReport}
+              variant={editMode ? "contained" : "outlined"}
+              startIcon={editMode ? <Save /> : <Edit />}
+              onClick={handleEditToggle}
+              color={editMode ? "success" : "primary"}
             >
-              Export Report
+              {editMode ? 'Save Changes' : 'Edit Dashboard'}
             </Button>
           )}
         </Box>
+      </Box>
 
-      {/* Executive Summary (for Overview tab) */}
-      {tabValue === 0 && overview && (
-        <Box mb={4}>
-          <Typography variant="h5" gutterBottom>
-            Program Health Summary
-          </Typography>
-          <Grid container spacing={3} mb={3}>
-            <Grid item xs={12} sm={6} md={3}>
-              <MetricCard
-                title="Overall Health Score"
-                value={`${overview.summary.healthScore}%`}
-                status={overview.summary.overallHealth}
-                trend={{
-                  direction: 'up',
-                  value: 2.5,
-                  label: 'vs last week'
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <MetricCard
-                title="Healthy Platforms"
-                value={`${overview.summary.keyMetrics.platformsHealthy}/5`}
-                subtitle="Platforms operational"
-                status="healthy"
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <MetricCard
-                title="Services Operational"
-                value={`${overview.summary.keyMetrics.servicesOperational}/6`}
-                subtitle="Backend services"
-                status="healthy"
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <MetricCard
-                title="Critical Issues"
-                value={overview.summary.keyMetrics.criticalIssues}
-                subtitle="Require immediate attention"
-                status={overview.summary.keyMetrics.criticalIssues > 0 ? 'critical' : 'healthy'}
-              />
-            </Grid>
-          </Grid>
-
-          {/* Top Concerns */}
-          {overview.summary.topConcerns && overview.summary.topConcerns.length > 0 && (
-            <Card sx={{ mb: 3 }}>
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  Top Concerns
-                </Typography>
-                {overview.summary.topConcerns.map((concern: string, index: number) => (
-                  <Alert key={index} severity="warning" sx={{ mb: 1 }}>
-                    {concern}
-                  </Alert>
-                ))}
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Recent Alerts */}
-          {alerts && alerts.alerts && alerts.alerts.length > 0 && (
-            <Card>
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  Recent Alerts ({alerts.summary.total})
-                </Typography>
-                <Box display="flex" gap={1} mb={2}>
-                  <Chip label={`Critical: ${alerts.summary.critical}`} color="error" size="small" />
-                  <Chip label={`High: ${alerts.summary.high}`} color="warning" size="small" />
-                  <Chip label={`Medium: ${alerts.summary.medium}`} color="info" size="small" />
-                </Box>
-                {alerts.alerts.slice(0, 5).map((alert: any, index: number) => (
-                  <Alert 
-                    key={index} 
-                    severity={alert.severity === 'critical' ? 'error' : 
-                             alert.severity === 'high' ? 'warning' : 'info'} 
-                    sx={{ mb: 1 }}
+      {/* Dashboard Grid */}
+      <Grid container spacing={3}>
+        {(editMode ? editedTemplate?.widgets : template.widgets)?.map((widget) => (
+          <Grid
+            key={widget.id}
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={widget.position.w === 3 ? 4 : widget.position.w === 6 ? 8 : 12}
+          >
+            {editMode ? (
+              <Card sx={{ height: '100%', border: '2px dashed #ccc' }}>
+                <CardContent>
+                  <TextField
+                    fullWidth
+                    label="Widget Title"
+                    value={widget.title}
+                    onChange={(e) => handleWidgetUpdate(widget.id, { title: e.target.value })}
+                    sx={{ mb: 2 }}
+                  />
+                  <TextField
+                    select
+                    fullWidth
+                    label="Widget Type"
+                    value={widget.type}
+                    onChange={(e) => handleWidgetUpdate(widget.id, { type: e.target.value as any })}
+                    sx={{ mb: 2 }}
                   >
-                    <strong>{alert.title}</strong> - {alert.description}
-                  </Alert>
-                ))}
-              </CardContent>
-            </Card>
-          )}
+                    <MenuItem value="metric">Metric</MenuItem>
+                    <MenuItem value="chart">Chart</MenuItem>
+                    <MenuItem value="table">Table</MenuItem>
+                    <MenuItem value="gauge">Gauge</MenuItem>
+                  </TextField>
+                  <Typography variant="body2" color="text.secondary">
+                    Position: {widget.position.x}, {widget.position.y} | Size: {widget.position.w}x{widget.position.h}
+                  </Typography>
+                </CardContent>
+              </Card>
+            ) : (
+              renderWidget(widget)
+            )}
+          </Grid>
+        ))}
+      </Grid>
+
+      {/* Edit Mode Actions */}
+      {editMode && (
+        <Box sx={{ position: 'fixed', bottom: 24, right: 24, display: 'flex', gap: 2 }}>
+          <Fab color="success" onClick={handleSaveTemplate} disabled={updateTemplateMutation.isPending}>
+            <Save />
+          </Fab>
+          <Fab color="error" onClick={handleEditToggle}>
+            <Cancel />
+          </Fab>
         </Box>
       )}
 
-      {/* Tabs */}
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs
-          value={tabValue}
-          onChange={handleTabChange}
-          variant="scrollable"
-          scrollButtons="auto"
-          aria-label="dashboard tabs"
+      {/* Loading overlay for mutations */}
+      {updateTemplateMutation.isPending && (
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            bgcolor: 'rgba(0,0,0,0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999
+          }}
         >
-          {tabs.map((tab, index) => (
-            <Tab
-              key={index}
-              icon={tab.icon}
-              label={tab.label}
-              iconPosition="start"
-              id={`dashboard-tab-${index}`}
-              aria-controls={`dashboard-tabpanel-${index}`}
-            />
-          ))}
-        </Tabs>
-      </Box>
-
-      {/* Tab Panels */}
-      {tabs.map((tab, index) => (
-        <TabPanel key={index} value={tabValue} index={index}>
-          {tab.component}
-        </TabPanel>
-      ))}
+          <LoadingSpinner />
+        </Box>
+      )}
     </Box>
   );
 };
